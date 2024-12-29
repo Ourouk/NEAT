@@ -1,6 +1,6 @@
 package com.hepl.NEAT;
 
-public class Connection {
+public class Connection implements Comparable<Connection> {
     public enum State {
         ENABLED,DISABLED
     }
@@ -13,6 +13,9 @@ public class Connection {
     private State connectionState;
     // The multiplier used when using this connection
     private Integer weight;
+    // The innovation number
+    public int innovation;
+
     Connection(Node Input, Node Output,Integer weight) {
         this.inputNode = Input;
         this.outputNode = Output;
@@ -38,5 +41,9 @@ public class Connection {
     public void setWeight(Integer weight) {
         this.weight = weight;
     }
-
+    // Implement compareTo() method to define sorting based on age
+    @Override
+    public int compareTo(Connection other) {
+        return Integer.compare(this.innovation, other.innovation);
+    }
 }
