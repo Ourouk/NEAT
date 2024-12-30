@@ -94,7 +94,7 @@ public class Genome {
                 if(c.getConnectionState() == Connection.State.ENABLED){
                     sum += c.getInputNode().getValue()*c.getWeight(); //Assume that input node are already evaluated
                 }
-                n.setValue(sigma(sum));
+                n.setValue(sigmoid(sum));
             }
         }
         float out[] = new float[AppConfig.NEAT_OUTPUT_SIZE];
@@ -107,7 +107,7 @@ public class Genome {
                     sum += c.getInputNode().getValue()*c.getWeight(); //Assume that input node are already evaluated
                 }
             }
-            float value = sigma(sum);
+            float value = sigmoid(sum);
             n.setValue(value);
             out[i-AppConfig.NEAT_INPUT_SIZE-1] = value;
         }
@@ -115,7 +115,7 @@ public class Genome {
         return out;
     }
 
-    public float sigma(float x){
+    public static float sigmoid(float x){
         return (float) (1/(1+Math.exp(-x)));
     }
 

@@ -30,11 +30,15 @@ public class Node {
     public float getValue(){
         System.out.println("Warning using fallback value calcultation method because of NaN value");
         if(Float.isNaN(this.value)){
+            float sum = 0;
             for(Connection c : incomingConnections){
-                value += c.getWeight() * c.getInputNode().getValue();
+                sum  += c.getWeight() * c.getInputNode().getValue();
             }
+            //DONE: Add activation function
+            return Genome.sigmoid(sum);
+        }else{
+            return value;
         }
-        return value;
     }
     public void setValue(float value){
         this.value = value;
