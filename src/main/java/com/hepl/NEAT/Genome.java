@@ -1,6 +1,7 @@
 package com.hepl.NEAT;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
@@ -8,7 +9,7 @@ import java.util.TreeMap;
 public class Genome {
     //Store Genome Information
     public Map<Integer,Node> nodes = new TreeMap<Integer,Node>();
-    public ArrayList<Connection> connections = new ArrayList<Connection>();
+    public List<Connection> connections = new ArrayList<Connection>();
 
     //Create a seed for random number generatuin
     private static Random rand = new Random();

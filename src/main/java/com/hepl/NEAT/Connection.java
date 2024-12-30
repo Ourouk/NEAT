@@ -16,7 +16,7 @@ public class Connection implements Comparable<Connection> {
     // The innovation number
     public int innovation;
 
-    Connection(Node Input, Node Output,Integer weight) {
+    public Connection(Node Input, Node Output,Integer weight) {
         this.inputNode = Input;
         this.outputNode = Output;
         this.connectionState = State.ENABLED;
