@@ -13,6 +13,7 @@ public class Node {
     public Type type;
     public ArrayList<Connection> incomingConnections;
     public ArrayList<Connection> outgoingConnections;
+    private float value = Float.NaN;
 
     public Node(Type type) {
         this.type = type;
@@ -25,7 +26,19 @@ public class Node {
         this.incomingConnections = in;
         this.outgoingConnections = out;
     }
-
+    //This Wrapper is needed to get the value of the node
+    public float getValue(){
+        System.out.println("Warning using fallback value calcultation method because of NaN value");
+        if(Float.isNaN(this.value)){
+            for(Connection c : incomingConnections){
+                value += c.getWeight() * c.getInputNode().getValue();
+            }
+        }
+        return value;
+    }
+    public void setValue(float value){
+        this.value = value;
+    }
     // Add a connection to the node
     public void addIncomingConnection(Connection connection) {
         incomingConnections.add(connection);

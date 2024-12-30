@@ -33,7 +33,7 @@ public class Genome {
     }
 
     //Generate and evaluate the output of the genome
-    public void generateNetwork(){
+    public void initNetwork(){
         //Add input nodes
         for(int i = 0; i < AppConfig.NEAT_INPUT_SIZE; i++){
             Node n = new Node(Node.Type.INPUT);
@@ -70,6 +70,53 @@ public class Genome {
             }
             addNode(node_id,n);
         }
+    }
+    //Core logic of using the network
+    public float[] getOutputs(float[] in){
+        //Reset all node values
+        //Small nodes.values() is a collection of all the values in the map not the values inside a node
+        for(Node n : nodes.values()){
+            //permit to check if the node is well cleaned easier
+            n.setValue(Float.NaN);
+        }
+        //Set input nodes
+        for(int i = 0; i < AppConfig.NEAT_INPUT_SIZE; i++){
+            getNode(i).setValue(i);
+        }
+        //Set bias node
+        getNode(AppConfig.NEAT_INPUT_SIZE).setValue(1);
+        //Evaluate hidden nodes
+        //This code assume that the nodes are sorted by layer
+        for(int i = AppConfig.NEAT_INPUT_SIZE+AppConfig.NEAT_OUTPUT_SIZE+1; i < nodes.size(); i++){
+            Node n = getNode(i);
+            float sum = 0;
+            for(Connection c : n.incomingConnections){
+                if(c.getConnectionState() == Connection.State.ENABLED){
+                    sum += c.getInputNode().getValue()*c.getWeight(); //Assume that input node are already evaluated
+                }
+                n.setValue(sigma(sum));
+            }
+        }
+        float out[] = new float[AppConfig.NEAT_OUTPUT_SIZE];
+        //Evaluate output nodes
+        for(int i = AppConfig.NEAT_INPUT_SIZE+1; i < AppConfig.NEAT_INPUT_SIZE+AppConfig.NEAT_OUTPUT_SIZE+1; i++){
+            Node n = getNode(i);
+            float sum = 0;
+            for(Connection c : n.incomingConnections){
+                if(c.getConnectionState() == Connection.State.ENABLED){
+                    sum += c.getInputNode().getValue()*c.getWeight(); //Assume that input node are already evaluated
+                }
+            }
+            float value = sigma(sum);
+            n.setValue(value);
+            out[i-AppConfig.NEAT_INPUT_SIZE-1] = value;
+        }
+        //TODO: Check Usefulness
+        return out;
+    }
+
+    public float sigma(float x){
+        return (float) (1/(1+Math.exp(-x)));
     }
 
     // Managing Mutation
