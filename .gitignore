@@ -104,4 +104,4 @@ local.properties
 .sts4-cache/
 
 # Images
-.Images/*
+.Images/
