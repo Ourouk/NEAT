@@ -12,7 +12,7 @@ public class Connection implements Comparable<Connection> {
     // Can change during the training
     private State connectionState;
     // The multiplier used when using this connection
-    private Integer weight;
+    private float weight;
     // The innovation number
     public int innovation;
 
