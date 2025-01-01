@@ -187,7 +187,7 @@ public class Pool {
         	Connection otherConnection = findConnectionByInnovation(other.connections, match.innovation);
         	
         	// average combine weights + random enabled/disabled
-        	Integer combinedWeight = (match.getWeight() + otherConnection.getWeight()/2);
+        	Integer combinedWeight = (match.getWeight() + otherConnection.getWeight()) / 2;
         	// boolean enabled = Math.random() > 0.5 ? match.setConnectionState(Connection.State.ENABLED) : match.setConnectionState(Connection.State.DISABLED);
         	
         	//childConnections.add(new Connection(match.getInputNode(), match.getOutputNode(), combinedWeight));

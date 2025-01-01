@@ -1,10 +1,10 @@
 package com.hepl.NEAT;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
-import java.util.TreeMap;
 
 public class Genome {
     //Store Genome Information
@@ -174,5 +174,37 @@ public class Genome {
         nodes.add(n);
         connections.add(c1);
         connections.add(c2);
+    }
+    
+    // Print the genome in a dot file (https://en.wikipedia.org/wiki/DOT_%28graph_description_language%29)
+    public void exportToDot(String filename) {
+        try (FileWriter writer = new FileWriter(filename)) {
+            writer.write("digraph Genome {\n"); // digraph (flèche)
+            writer.write("\trankdir=BT;\n"); // Base to top layout
+
+            // Write nodes
+            for (Node node : nodes) {
+                String label = String.format("ID: %d", nodes.indexOf(node));
+                writer.write(String.format("\t%d [label=\"%s\", shape=%s];\n", 
+                    nodes.indexOf(node),
+                    label,
+                    node.type == Node.Type.INPUT ? "ellipse" : 
+                    node.type == Node.Type.OUTPUT ? "doublecircle" : "circle"));
+            }
+
+            // Write connections
+            for (Connection connection : connections) {
+                String label = String.format("Weight: %d\nInnovation: %d", connection.getWeight(), connection.innovation);
+                writer.write(String.format("\t%d -> %d [label=\"%s\", style=%s];\n", 
+                    nodes.indexOf(connection.getInputNode()),
+                    nodes.indexOf(connection.getOutputNode()),
+                    label,
+                    connection.getConnectionState() == Connection.State.ENABLED ? "solid" : "dashed"));
+            }
+
+            writer.write("}");
+        } catch (IOException e) {
+            System.err.println("Error writing DOT file: " + e.getMessage());
+        }
     }
 }
