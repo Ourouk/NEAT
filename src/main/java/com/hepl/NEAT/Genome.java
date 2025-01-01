@@ -8,7 +8,7 @@ import java.util.TreeMap;
 
 public class Genome {
     //Store Genome Information
-    public Map<Integer,Node> nodes = new TreeMap<Integer,Node>();
+    public List<Node> nodes = new ArrayList<Node>();
     public List<Connection> connections = new ArrayList<Connection>();
 
     //Create a seed for random number generatuin
@@ -17,14 +17,23 @@ public class Genome {
     public Genome() {
 
     }
-
     //Interface to edit the treeMap
-    public void addNode(Integer i, Node n){
-        nodes.put(i,n);
+    public void addNode(Node n){
+        nodes.add(n);
     }
-
+    public void addNode(Integer i, Node n){
+        nodes.add(i,n);
+    }
+    //Manually add a connection
     public void addConnection(Connection c){
         connections.add(c);
+    }
+    //Automatic connection creation
+    public void addConnection(com.hepl.NEAT.Node Input, com.hepl.NEAT.Node Output, Integer weight){
+        Connection c =new Connection(Input,Output,weight);
+        connections.add(c);
+        Input.addOutgoingConnection(c);
+        Output.addIncomingConnection(c);
     }
 
     //Access an object into the treeMap
@@ -75,7 +84,7 @@ public class Genome {
     public float[] getOutputs(float[] in){
         //Reset all node values
         //Small nodes.values() is a collection of all the values in the map not the values inside a node
-        for(Node n : nodes.values()){
+        for(Node n : nodes){
             //permit to check if the node is well cleaned easier
             n.setValue(Float.NaN);
         }
@@ -111,7 +120,6 @@ public class Genome {
             n.setValue(value);
             out[i-AppConfig.NEAT_INPUT_SIZE-1] = value;
         }
-        //TODO: Check Usefulness
         return out;
     }
 
@@ -121,40 +129,50 @@ public class Genome {
 
     // Managing Mutation
     public void mutate(){
-        int randomInt = rand.nextInt();
-        switch(randomInt){
-            case 0:mutAddConnection();break;
-            case 1:mutRemoveConnection();break;
-            case 2:mutChangeConnectionState();break;
-            case 3:mutAddNode();break;
-            case 4:mutRemoveNode();break;
-            case 5:mutAddConnection();break;
-            case 6:mutRemoveConnection();break;
-            case 7:mutChangeNode();break;
+        //Select a random mutation using rates
+        double r = rand.nextDouble();
+        if(r < AppConfig.NEAT_WEIGHT_MUTATION_RATE){
+            mutChangeConnectionWeight();
+        }else if(r < AppConfig.NEAT_WEIGHT_MUTATION_RATE + AppConfig.NEAT_CONNECTION_MUTATION_RATE){
+            mutAddConnection();
+        }else if(r < AppConfig.NEAT_WEIGHT_MUTATION_RATE + AppConfig.NEAT_CONNECTION_MUTATION_RATE + AppConfig.NEAT_NODE_MUTATION_RATE){
+            mutAddNode();
         }
     }
-
+    //Connection mutation
     public void mutAddConnection(){
-
+        //Select a random connection
+        //TODO: Adjust the randomness of that selection
+        connections.add(new Connection(nodes.get(rand.nextInt(nodes.size())),nodes.get(rand.nextInt(nodes.size())),rand.nextInt()));
     }
-
     public void mutRemoveConnection(){
-
+        //Select a random connection
+        connections.remove(rand.nextInt(connections.size()));
     }
-
+    public void mutChangeConnectionWeight(){
+        //Select a random connection
+        //TODO: Adjust the random nature of weight
+        connections.get(rand.nextInt(connections.size())).setWeight(rand.nextInt());
+    }
+    //Node Mutation
     public void mutChangeConnectionState(){
-
+        //Select a random connection
+        connections.get(rand.nextInt(connections.size())).flipConnectionState();
     }
 
     public void mutAddNode(){
-
-    }
-
-    public void mutRemoveNode(){
-
-    }
-
-    public void mutChangeNode(){
-
+        //Select a random connection
+        Connection c = connections.get(rand.nextInt(connections.size()));
+        //Disable the connection
+        c.setConnectionState(Connection.State.DISABLED);
+        //Create a new node
+        Node n = new Node(Node.Type.HIDDEN);
+        //Create two new connections
+        Connection c1 = new Connection(c.getInputNode(),n,rand.nextInt());
+        Connection c2 = new Connection(n,c.getOutputNode(),rand.nextInt());
+        //Add the new node and connections
+        nodes.add(n);
+        connections.add(c1);
+        connections.add(c2);
     }
 }

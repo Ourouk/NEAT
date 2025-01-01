@@ -35,6 +35,13 @@ public class Connection implements Comparable<Connection> {
     public void setConnectionState(State connectionState) {
         this.connectionState = connectionState;
     }
+    public void flipConnectionState() {
+        if(this.connectionState == State.ENABLED){
+            this.connectionState = State.DISABLED;
+        }else{
+            this.connectionState = State.ENABLED;
+        }
+    }
     public Integer getWeight() {
         return weight;
     }
