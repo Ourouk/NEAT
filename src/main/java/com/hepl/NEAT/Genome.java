@@ -193,18 +193,19 @@ public class Genome {
     }
     
     // copy the genome
-    public Genome copy() {
+    @Override
+    public Genome clone() {
     	Genome copy = new Genome();
     	
     	// nodes
     	for (Node node : nodes) {
-    		Node newNode = node.copy();
+    		Node newNode = node.clone();
     		copy.addNode(newNode);
     	}
     	
     	// connections
     	for (Connection con : connections) {
-    		Connection newCon = con.copy();
+    		Connection newCon = con.clone();
     		copy.addConnection(newCon);
     	}
     	return copy;

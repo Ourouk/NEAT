@@ -205,7 +205,7 @@ public class Pool {
             Connection con2 = findConnectionByInnovation(other.connections, con1.innovation);
             
             // copy of the connection + change weight
-            Connection newCon = con1.copy();
+            Connection newCon = con1.clone();
             newCon.setWeight((con1.getWeight() + con2.getWeight()) / 2);
             
             // randomly change the state
@@ -215,12 +215,12 @@ public class Pool {
 
         // Add disjoint and excess connections from the fittest parent
         for (Connection con : disjointConnections) {
-            Connection newCon = con.copy();
+            Connection newCon = con.clone();
             child.addConnection(newCon);
         }
         for (Connection con : excessConnections) {
         	if (fittest.connections.contains(con)) {
-	            Connection newCon = con.copy();
+	            Connection newCon = con.clone();
 	            child.addConnection(newCon);
         	}
         }

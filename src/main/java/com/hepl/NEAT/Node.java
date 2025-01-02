@@ -52,8 +52,8 @@ public class Node {
     public void addOutgoingConnection(Connection connection) {
         outgoingConnections.add(connection);
     }
-    
-    public Node copy() {
+    @Override
+    public Node clone() {
     	Node copy = new Node(this.type);
     	copy.id = this.id;
     	return copy;

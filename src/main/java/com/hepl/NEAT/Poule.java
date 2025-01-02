@@ -108,7 +108,7 @@ public class Poule {
         // Add matching connections with averaged weights
         for (Connection con1 : matchingConnections) {
             Connection con2 = findConnectionByInnovation(other.connections, con1.innovation);
-            Connection newCon = con1.copy();
+            Connection newCon = con1.clone();
             newCon.setWeight((con1.getWeight() + con2.getWeight()) / 2);
             newCon.setConnectionState(Math.random() > 0.5 ? con1.getConnectionState() : con2.getConnectionState());
             child.addConnection(newCon);
@@ -116,10 +116,10 @@ public class Poule {
 
         // Add disjoint and excess connections from the fittest parent
         for (Connection con : disjointConnections) {
-            child.addConnection(con.copy());
+            child.addConnection(con.clone());
         }
         for (Connection con : excessConnections) {
-            child.addConnection(con.copy());
+            child.addConnection(con.clone());
         }
 
         // Add nodes from both parents (ensure no duplicates)

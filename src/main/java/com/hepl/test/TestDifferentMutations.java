@@ -65,7 +65,7 @@ public class TestDifferentMutations {
 		System.out.println();
 		
 		Genome weightGenome = new Genome();
-		weightGenome = genome.copy();
+		weightGenome = genome.clone();
 		
 		weightGenome.mutChangeConnectionWeight();
 
@@ -83,7 +83,7 @@ public class TestDifferentMutations {
 		System.out.println();
 		
 		Genome stateGenome = new Genome();
-		stateGenome = genome.copy();
+		stateGenome = genome.clone();
 		
 		stateGenome.mutChangeConnectionState();
 
@@ -101,7 +101,7 @@ public class TestDifferentMutations {
 		System.out.println();
 		
 		Genome conGenome = new Genome();
-		conGenome = genome.copy();
+		conGenome = genome.clone();
 		
 		conGenome.mutAddConnection();
 
