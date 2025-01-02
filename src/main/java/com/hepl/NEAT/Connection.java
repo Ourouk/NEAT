@@ -66,4 +66,20 @@ public class Connection implements Comparable<Connection> {
     	copy.setConnectionState(this.getConnectionState());
     	return copy;
     }
+    public boolean IsValid()
+    {
+        if(outputNode.type == Node.Type.INPUT)
+        {
+            return false;
+        }
+        if(inputNode.type == Node.Type.OUTPUT)
+        {
+            return false;
+        }
+        if(outputNode.type == Node.Type.OUTPUT)
+        {
+            return true;
+        }
+        return inputNode.id < outputNode.id;
+    }
 }
