@@ -46,12 +46,15 @@ public class Node {
     }
     // Add a connection to the node
     public void addIncomingConnection(Connection connection) {
-        
+        if(connection.IsValid()){
         incomingConnections.add(connection);
+        }
     }
 
     public void addOutgoingConnection(Connection connection) {
+        if(connection.IsValid()){
         outgoingConnections.add(connection);
+        }
     }
     
     public Node copy() {
