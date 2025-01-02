@@ -153,7 +153,10 @@ public class Genome {
     public void mutAddConnection(){
         //Select a random connection
         //TODO: Adjust the randomness of that selection
-        connections.add(new Connection(nodes.get(rand.nextInt(nodes.size())),nodes.get(rand.nextInt(nodes.size())),rand.nextInt()));
+    	Connection c = new Connection(nodes.get(rand.nextInt(nodes.size())),nodes.get(rand.nextInt(nodes.size())),rand.nextInt());
+        c.innovation=InnovationCounter.newInnovation();
+//    	connections.add(new Connection(nodes.get(rand.nextInt(nodes.size())),nodes.get(rand.nextInt(nodes.size())),rand.nextInt()));
+        connections.add(c);
     }
     public void mutRemoveConnection(){
         //Select a random connection
@@ -179,7 +182,9 @@ public class Genome {
         Node n = new Node(Node.Type.HIDDEN);
         //Create two new connections
         Connection c1 = new Connection(c.getInputNode(),n,rand.nextInt());
+        c1.innovation = InnovationCounter.newInnovation();
         Connection c2 = new Connection(n,c.getOutputNode(),rand.nextInt());
+        c2.innovation = InnovationCounter.newInnovation();
         //Add the new node and connections
         nodes.add(n);
         connections.add(c1);
