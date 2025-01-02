@@ -25,11 +25,13 @@ public class Pool {
     }
     
     private Node findNodeById(List<Node> nodes, int id) {
-    	for (Node node : nodes) {
-    		if (node.id == id) {
-    			return node;
-    		}
-    	}
+//    	for (Node node : nodes) {
+//    		if (node.id == id) {
+//    			return node;
+//    		}
+//    	}
+//    	return null;
+    	if (id < nodes.size()) return nodes.get(id);
     	return null;
     }
 

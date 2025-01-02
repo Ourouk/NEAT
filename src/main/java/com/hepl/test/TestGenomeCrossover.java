@@ -2,8 +2,7 @@ package com.hepl.test;
 
 import com.hepl.NEAT.*;
 
-public class TestGenomeCrossover { // based on p109 of the paper and hydrozoa YT channel
-
+public class TestGenomeCrossover { // based on p109 of the paper and hydrozoa YT channel	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		// parent 1
@@ -102,6 +101,65 @@ public class TestGenomeCrossover { // based on p109 of the paper and hydrozoa YT
 		Pool pool = new Pool();
 		
 		Genome child = pool.GenomeCrossover(parent1, parent2, 8f, 10f);
+		
+		// Verify
+		Genome result = new Genome();
+		Node rNode1I = new Node(Node.Type.INPUT);
+		Node rNode2I = new Node(Node.Type.INPUT);
+		Node rNode3I = new Node(Node.Type.INPUT);
+		Node rNode4O = new Node(Node.Type.OUTPUT);
+		Node rNode5H = new Node(Node.Type.HIDDEN);
+		Node rNode6H = new Node(Node.Type.HIDDEN);
+		
+		result.addNode(rNode1I);
+		result.addNode(rNode2I);
+		result.addNode(rNode3I);
+		result.addNode(rNode4O);
+		result.addNode(rNode5H);
+		result.addNode(rNode6H);
+		
+		Connection rCon14i1 = new Connection(rNode1I, rNode4O, 1);
+		Connection rCon24i2 = new Connection(rNode2I, rNode4O, 1);
+		Connection rCon34i3 = new Connection(rNode3I, rNode4O, 1);
+		Connection rCon25i4 = new Connection(rNode2I, rNode5H, 1);
+		Connection rCon54i5 = new Connection(rNode5H, rNode4O, 1);
+		Connection rCon56i6 = new Connection(rNode5H, rNode6H, 1);
+		Connection rCon64i7 = new Connection(rNode6H, rNode4O, 1);
+		Connection rCon15i8 = new Connection(rNode1I, rNode5H, 1);
+		Connection rCon35i9 = new Connection(rNode3I, rNode5H, 1);
+		Connection rCon16i10 = new Connection(rNode1I, rNode6H, 1);
+		
+		rCon14i1.innovation = 1;
+		rCon24i2.innovation = 2;
+		rCon34i3.innovation = 3;
+		rCon25i4.innovation = 4;
+		rCon54i5.innovation = 5;
+		rCon56i6.innovation = 6;
+		rCon64i7.innovation = 7;
+		rCon15i8.innovation = 8;
+		rCon35i9.innovation = 9;
+		rCon16i10.innovation = 10;
+		
+		rCon24i2.setConnectionState(Connection.State.DISABLED);
+		rCon54i5.setConnectionState(Connection.State.DISABLED);
+		
+		result.addConnection(rCon14i1);
+		result.addConnection(rCon24i2);
+		result.addConnection(rCon34i3);
+		result.addConnection(rCon25i4);
+		result.addConnection(rCon54i5);
+		result.addConnection(rCon56i6);
+		result.addConnection(rCon64i7);
+		result.addConnection(rCon15i8);
+		result.addConnection(rCon35i9);
+		result.addConnection(rCon16i10);
+		
+		if (pool.getMatchingConnections(child, result).size() == child.connections.size() && pool.getDisjointConnections(child, result).isEmpty() && pool.getExcessConnections(child, result).isEmpty()) {
+			System.out.println("Success");
+		} else {
+			System.out.println("Failed");
+		}
+		
 //		Genome child = pool.GenomeCrossover(parent1, parent2, 10f, 8f);
 		
 		child.exportToDot("Images/Crossover/child.dot");
@@ -122,6 +180,7 @@ public class TestGenomeCrossover { // based on p109 of the paper and hydrozoa YT
 		for (Connection con : child.connections) {
 			System.out.println("Input node " + con.getInputNode().id + ", Output node " + con.getOutputNode().id + ", Innovation: " + con.innovation + ", Weight: " + con.getWeight() + ", State " + con.getConnectionState());
 		}
+		
 	}
 
 }

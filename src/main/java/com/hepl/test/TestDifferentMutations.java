@@ -28,12 +28,19 @@ public class TestDifferentMutations {
 		Connection con54i5 = new Connection(node5H,node4O,1);
 		Connection con15i6 = new Connection(node1I,node5H,1);
 		
-		con14i1.innovation = 1;
-		con24i2.innovation = 2;
-		con34i3.innovation = 3;
-		con25i4.innovation = 4;
-		con54i5.innovation = 5;
-		con15i6.innovation = 6;
+//		con14i1.innovation = 1;
+//		con24i2.innovation = 2;
+//		con34i3.innovation = 3;
+//		con25i4.innovation = 4;
+//		con54i5.innovation = 5;
+//		con15i6.innovation = 6;
+		
+		con14i1.innovation = InnovationCounter.newInnovation();
+		con24i2.innovation = InnovationCounter.newInnovation();
+		con34i3.innovation = InnovationCounter.newInnovation();
+		con25i4.innovation = InnovationCounter.newInnovation();
+		con54i5.innovation = InnovationCounter.newInnovation();
+		con15i6.innovation = InnovationCounter.newInnovation();
 		
 		con24i2.setConnectionState(Connection.State.DISABLED);
 		

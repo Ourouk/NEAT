@@ -103,5 +103,5 @@ local.properties
 # Spring Boot Tooling
 .sts4-cache/
 
-# Images
-.Images/
+# Images directory
+Images/
