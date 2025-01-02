@@ -46,6 +46,7 @@ public class Node {
     }
     // Add a connection to the node
     public void addIncomingConnection(Connection connection) {
+        
         incomingConnections.add(connection);
     }
 

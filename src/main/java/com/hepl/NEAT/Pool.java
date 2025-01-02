@@ -17,7 +17,7 @@ public class Pool {
     
     private Connection findConnectionByInnovation(List<Connection> connections, int innovation) {
     	for (Connection con : connections) {
-    		if (con.innovation == innovation) {
+    		if (con.getInnovation() == innovation) {
     			return con;
     		}
     	}
@@ -53,10 +53,10 @@ public class Pool {
                 Connection con1 = p1Connections.get(i);
                 Connection con2 = p2Connections.get(j);
 
-                if (con1.innovation == con2.innovation) { // same innovation number -> matching gene
+                if (con1.getInnovation() == con2.getInnovation()) { // same innovation number -> matching gene
                     matchingConnections.add(con1);
                     break;
-                } else if (con1.innovation < con2.innovation) { // not a matching gene
+                } else if (con1.getInnovation() < con2.getInnovation()) { // not a matching gene
                     break;
                 }
             }
@@ -76,10 +76,10 @@ public class Pool {
         	Connection con1 = p1Connections.get(i);
         	for (int j = 0; j < p2Connections.size(); j++) {
         		Connection con2 = p2Connections.get(j);
-        		if (con1.innovation == con2.innovation) {
+        		if (con1.getInnovation() == con2.getInnovation()) {
         			itIs = false;
         			break;
-        		} else if (con1.innovation < con2.innovation) {
+        		} else if (con1.getInnovation() < con2.getInnovation()) {
         			break;
         		}
         	}
@@ -93,10 +93,10 @@ public class Pool {
         	Connection con2 = p2Connections.get(j);
         	for (int i = 0; i < p1Connections.size(); i++) {
         		Connection con1 = p1Connections.get(i);
-        		if (con2.innovation == con1.innovation) {
+        		if (con2.getInnovation() == con1.getInnovation()) {
         			itIs = false;
         			break;
-        		} else if (con2.innovation < con1.innovation) {
+        		} else if (con2.getInnovation() < con1.getInnovation()) {
         			break;
         		}
         	}
@@ -126,7 +126,7 @@ public class Pool {
     		Connection con1 = p1Connections.get(i);
         	for (int j = 0; j < p2Connections.size(); j++) {
         		Connection con2 = p2Connections.get(j);
-        		if (con1.innovation <= con2.innovation) {
+        		if (con1.getInnovation() <= con2.getInnovation()) {
         			itIs = false;
         			break;
         		}
@@ -142,7 +142,7 @@ public class Pool {
         	Connection con2 = p2Connections.get(j);
         	for (int i = 0; i < p1Connections.size(); i++) {
         		Connection con1 = p1Connections.get(i);
-        		if (con2.innovation <= con1.innovation) {
+        		if (con2.getInnovation() <= con1.getInnovation()) {
         			itIs = false;
         			break;
         		}
@@ -165,7 +165,7 @@ public class Pool {
     	float totalWeightDifference = 0f;
     	
     	for (Connection match : matchingConnections) {
-    		Connection otherConnection = findConnectionByInnovation(p2.connections, match.innovation); // 
+    		Connection otherConnection = findConnectionByInnovation(p2.connections, match.getInnovation()); // 
     		totalWeightDifference += Math.abs(match.getWeight() - otherConnection.getWeight()); // calculate the weight
     	}
     	
@@ -202,7 +202,7 @@ public class Pool {
 
         // Add matching connections with averaged weights
         for (Connection con1 : matchingConnections) {
-            Connection con2 = findConnectionByInnovation(other.connections, con1.innovation);
+            Connection con2 = findConnectionByInnovation(other.connections, con1.getInnovation());
             
             // copy of the connection + change weight
             Connection newCon = con1.copy();

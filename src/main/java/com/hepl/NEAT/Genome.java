@@ -154,7 +154,6 @@ public class Genome {
         //Select a random connection
         //TODO: Adjust the randomness of that selection
     	Connection c = new Connection(nodes.get(rand.nextInt(nodes.size())),nodes.get(rand.nextInt(nodes.size())),rand.nextInt());
-        c.innovation=InnovationCounter.newInnovation();
 //    	connections.add(new Connection(nodes.get(rand.nextInt(nodes.size())),nodes.get(rand.nextInt(nodes.size())),rand.nextInt()));
         connections.add(c);
     }
@@ -182,9 +181,7 @@ public class Genome {
         Node n = new Node(Node.Type.HIDDEN);
         //Create two new connections
         Connection c1 = new Connection(c.getInputNode(),n,rand.nextInt());
-        c1.innovation = InnovationCounter.newInnovation();
         Connection c2 = new Connection(n,c.getOutputNode(),rand.nextInt());
-        c2.innovation = InnovationCounter.newInnovation();
         //Add the new node and connections
         nodes.add(n);
         connections.add(c1);
@@ -228,7 +225,7 @@ public class Genome {
 
             // Write connections
             for (Connection connection : connections) {
-                String label = String.format("Weight: %f\nInnovation: %d", connection.getWeight(), connection.innovation);
+                String label = String.format("Weight: %f\nInnovation: %d", connection.getWeight(), connection.getInnovation());
                 writer.write(String.format("\t%d -> %d [label=\"%s\", style=%s];\n", 
 //                    nodes.indexOf(connection.getInputNode()),
 //                    nodes.indexOf(connection.getOutputNode()),
