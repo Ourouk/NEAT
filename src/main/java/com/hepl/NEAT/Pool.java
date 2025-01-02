@@ -23,11 +23,20 @@ public class Pool {
     	}
     	return null;
     }
+    
+    private Node findNodeById(List<Node> nodes, int id) {
+    	for (Node node : nodes) {
+    		if (node.id == id) {
+    			return node;
+    		}
+    	}
+    	return null;
+    }
 
     /*
      * MATCHING
      */
-    private List<Connection> getMatchingConnections(Genome p1, Genome p2) {
+    public List<Connection> getMatchingConnections(Genome p1, Genome p2) {
         List<Connection> matchingConnections = new ArrayList<Connection>();
 
         // List<Connection> p1Connections = new ArrayList<Connection>(p1.connections);
@@ -54,7 +63,7 @@ public class Pool {
         return matchingConnections;
     }
     
-    private List<Connection> getDisjointConnections(Genome p1, Genome p2) {
+    public List<Connection> getDisjointConnections(Genome p1, Genome p2) {
         List<Connection> disjointConnections = new ArrayList<Connection>();
 
         List<Connection> p1Connections = sortConnectionsByInnovation(new ArrayList<Connection>(p1.connections));
@@ -93,11 +102,17 @@ public class Pool {
         		disjointConnections.add(con2);
         	}
         }
+        
+        for (Connection con : getExcessConnections(p1,p2)) {
+        	if (disjointConnections.contains(con)) {
+        		disjointConnections.remove(con);
+        	}
+        }
 
         return disjointConnections;
     }
     
-    private List<Connection> getExcessConnections(Genome p1, Genome p2) {
+    public List<Connection> getExcessConnections(Genome p1, Genome p2) {
         List<Connection> excessConnections = new ArrayList<Connection>();
 
         List<Connection> p1Connections = sortConnectionsByInnovation(new ArrayList<Connection>(p1.connections));
@@ -168,42 +183,60 @@ public class Pool {
      * CROSSOVER
      */
     public Genome GenomeCrossover(Genome p1, Genome p2, float fitnessP1, float fitnessP2) {
-        // between two parent
         Genome child = new Genome();
+        
+        // synchronize of the ids of the parent nodes
+//        p1.synchronizeNodeIds();
+//        p2.sy nchronizeNodeIds();
 
-        // who's the fittest parent ?
+        // Determine the fitter parent
         Genome fittest = fitnessP1 >= fitnessP2 ? p1 : p2;
         Genome other = fitnessP1 >= fitnessP2 ? p2 : p1;
-        
-        // matching, disjoint and excess connections
-        List<Connection> matchingConnections = getMatchingConnections(fittest,other);
-        List<Connection> disjointConnections = getDisjointConnections(fittest,other);
-        List<Connection> excessConnections = getExcessConnections(fittest,other);
-        
-        List<Connection> childConnections = new ArrayList<Connection>();
-        
-        // add matching connections
-        for (Connection match : matchingConnections) {
-        	Connection otherConnection = findConnectionByInnovation(other.connections, match.innovation);
-        	
-        	// average combine weights + random enabled/disabled
-        	Integer combinedWeight = (match.getWeight() + otherConnection.getWeight()) / 2;
-        	// boolean enabled = Math.random() > 0.5 ? match.setConnectionState(Connection.State.ENABLED) : match.setConnectionState(Connection.State.DISABLED);
-        	
-        	//childConnections.add(new Connection(match.getInputNode(), match.getOutputNode(), combinedWeight));
-        	match.setWeight(combinedWeight);
-        	childConnections.add(match);
+
+        // Get matching, disjoint, and excess connections
+        List<Connection> matchingConnections = getMatchingConnections(fittest, other);
+        List<Connection> disjointConnections = getDisjointConnections(fittest, other);
+        List<Connection> excessConnections = getExcessConnections(fittest, other);
+
+        // Add matching connections with averaged weights
+        for (Connection con1 : matchingConnections) {
+            Connection con2 = findConnectionByInnovation(other.connections, con1.innovation);
+            
+            // copy of the connection + change weight
+            Connection newCon = con1.copy();
+            newCon.setWeight((con1.getWeight() + con2.getWeight()) / 2);
+            
+            // randomly change the state
+            //newCon.setConnectionState(Math.random() > 0.5 ? con1.getConnectionState() : con2.getConnectionState());
+            child.addConnection(newCon);
         }
-        
-        // add disjoint and excess connections from the fittest parent
-        for (Connection disjoint : disjointConnections) {
-        	childConnections.add(disjoint);
+
+        // Add disjoint and excess connections from the fittest parent
+        for (Connection con : disjointConnections) {
+            Connection newCon = con.copy();
+            child.addConnection(newCon);
         }
-        for (Connection excess : excessConnections) {
-        	childConnections.add(excess);
+        for (Connection con : excessConnections) {
+        	if (fittest.connections.contains(con)) {
+	            Connection newCon = con.copy();
+	            child.addConnection(newCon);
+        	}
         }
-        
-        child.connections = childConnections;
+
+        // Add nodes from parents (no duplicates)
+        for (Node node : fittest.nodes) {
+            if (findNodeById(child.nodes, node.id) == null) {
+                child.addNode(node);
+            }
+        }
+        for (Node node : other.nodes) {
+            if (findNodeById(child.nodes, node.id) == null) {
+                child.addNode(node);
+            }
+        }
+
+        child.synchronizeNodeIds();
         return child;
     }
+
 }

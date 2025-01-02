@@ -11,6 +11,7 @@ public class Node {
     }
 
     public Type type;
+    public int id;
     public ArrayList<Connection> incomingConnections;
     public ArrayList<Connection> outgoingConnections;
     private float value = Float.NaN;
@@ -50,5 +51,11 @@ public class Node {
 
     public void addOutgoingConnection(Connection connection) {
         outgoingConnections.add(connection);
+    }
+    
+    public Node copy() {
+    	Node copy = new Node(this.type);
+    	copy.id = this.id;
+    	return copy;
     }
 }

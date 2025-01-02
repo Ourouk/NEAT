@@ -20,10 +20,20 @@ public class Genome {
     //Interface to edit the treeMap
     public void addNode(Node n){
         nodes.add(n);
+        synchronizeNodeIds();
     }
     public void addNode(Integer i, Node n){
         nodes.add(i,n);
+        synchronizeNodeIds();
     }
+    
+    // synchronize node ids with their index
+    public void synchronizeNodeIds() {
+    	for (int i = 0; i < nodes.size(); i++) {
+    		nodes.get(i).id = i;
+    	}
+    }
+    
     //Manually add a connection
     public void addConnection(Connection c){
         connections.add(c);
@@ -152,7 +162,7 @@ public class Genome {
     public void mutChangeConnectionWeight(){
         //Select a random connection
         //TODO: Adjust the random nature of weight
-        connections.get(rand.nextInt(connections.size())).setWeight(rand.nextInt());
+        connections.get(rand.nextInt(connections.size())).setWeight(rand.nextFloat());
     }
     //Node Mutation
     public void mutChangeConnectionState(){
@@ -174,6 +184,25 @@ public class Genome {
         nodes.add(n);
         connections.add(c1);
         connections.add(c2);
+        synchronizeNodeIds();
+    }
+    
+    // copy the genome
+    public Genome copy() {
+    	Genome copy = new Genome();
+    	
+    	// nodes
+    	for (Node node : nodes) {
+    		Node newNode = node.copy();
+    		copy.addNode(newNode);
+    	}
+    	
+    	// connections
+    	for (Connection con : connections) {
+    		Connection newCon = con.copy();
+    		copy.addConnection(newCon);
+    	}
+    	return copy;
     }
     
     // Print the genome in a dot file (https://en.wikipedia.org/wiki/DOT_%28graph_description_language%29)
@@ -184,7 +213,7 @@ public class Genome {
 
             // Write nodes
             for (Node node : nodes) {
-                String label = String.format("ID: %d", nodes.indexOf(node));
+                String label = String.format("ID: %d", node.id);
                 writer.write(String.format("\t%d [label=\"%s\", shape=%s];\n", 
                     nodes.indexOf(node),
                     label,
@@ -194,10 +223,12 @@ public class Genome {
 
             // Write connections
             for (Connection connection : connections) {
-                String label = String.format("Weight: %d\nInnovation: %d", connection.getWeight(), connection.innovation);
+                String label = String.format("Weight: %f\nInnovation: %d", connection.getWeight(), connection.innovation);
                 writer.write(String.format("\t%d -> %d [label=\"%s\", style=%s];\n", 
-                    nodes.indexOf(connection.getInputNode()),
-                    nodes.indexOf(connection.getOutputNode()),
+//                    nodes.indexOf(connection.getInputNode()),
+//                    nodes.indexOf(connection.getOutputNode()),
+                	connection.getInputNode().id,
+                	connection.getOutputNode().id,
                     label,
                     connection.getConnectionState() == Connection.State.ENABLED ? "solid" : "dashed"));
             }

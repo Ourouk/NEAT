@@ -49,14 +49,17 @@ public class Poule {
         List<Connection> p1Connections = sortConnectionsByInnovation(new ArrayList<>(p1.connections));
         List<Connection> p2Connections = sortConnectionsByInnovation(new ArrayList<>(p2.connections));
 
+        int maxInnovationP2 = p2Connections.isEmpty() ? 0 : p2Connections.get(p2Connections.size() - 1).innovation;
+        int maxInnovationP1 = p1Connections.isEmpty() ? 0 : p1Connections.get(p1Connections.size() - 1).innovation;
+
         for (Connection con1 : p1Connections) {
-            if (findConnectionByInnovation(p2Connections, con1.innovation) == null) {
+            if (findConnectionByInnovation(p2Connections, con1.innovation) == null && con1.innovation <= maxInnovationP2) {
                 disjointConnections.add(con1);
             }
         }
 
         for (Connection con2 : p2Connections) {
-            if (findConnectionByInnovation(p1Connections, con2.innovation) == null) {
+            if (findConnectionByInnovation(p1Connections, con2.innovation) == null && con2.innovation <= maxInnovationP1) {
                 disjointConnections.add(con2);
             }
         }
@@ -69,14 +72,17 @@ public class Poule {
         List<Connection> p1Connections = sortConnectionsByInnovation(new ArrayList<>(p1.connections));
         List<Connection> p2Connections = sortConnectionsByInnovation(new ArrayList<>(p2.connections));
 
+        int maxInnovationP2 = p2Connections.isEmpty() ? 0 : p2Connections.get(p2Connections.size() - 1).innovation;
+        int maxInnovationP1 = p1Connections.isEmpty() ? 0 : p1Connections.get(p1Connections.size() - 1).innovation;
+
         for (Connection con1 : p1Connections) {
-            if (con1.innovation > p2Connections.get(p2Connections.size() - 1).innovation) {
+            if (con1.innovation > maxInnovationP2) {
                 excessConnections.add(con1);
             }
         }
 
         for (Connection con2 : p2Connections) {
-            if (con2.innovation > p1Connections.get(p1Connections.size() - 1).innovation) {
+            if (con2.innovation > maxInnovationP1) {
                 excessConnections.add(con2);
             }
         }
@@ -102,34 +108,21 @@ public class Poule {
         // Add matching connections with averaged weights
         for (Connection con1 : matchingConnections) {
             Connection con2 = findConnectionByInnovation(other.connections, con1.innovation);
-            int averagedWeight = (con1.getWeight() + con2.getWeight()) / 2;
-            Connection newCon = new Connection(con1.getInputNode(), con1.getOutputNode(), averagedWeight);
-            newCon.innovation = con1.innovation;
+            Connection newCon = con1.copy();
+            newCon.setWeight((con1.getWeight() + con2.getWeight()) / 2);
             newCon.setConnectionState(Math.random() > 0.5 ? con1.getConnectionState() : con2.getConnectionState());
-            if (!child.connections.contains(newCon)) {
-                child.addConnection(newCon);
-            }
+            child.addConnection(newCon);
         }
 
         // Add disjoint and excess connections from the fittest parent
         for (Connection con : disjointConnections) {
-            if (!child.connections.contains(con)) {
-                Connection newCon = new Connection(con.getInputNode(), con.getOutputNode(), con.getWeight());
-                newCon.innovation = con.innovation;
-                newCon.setConnectionState(con.getConnectionState());
-                child.addConnection(newCon);
-            }
+            child.addConnection(con.copy());
         }
         for (Connection con : excessConnections) {
-            if (!child.connections.contains(con)) {
-                Connection newCon = new Connection(con.getInputNode(), con.getOutputNode(), con.getWeight());
-                newCon.innovation = con.innovation;
-                newCon.setConnectionState(con.getConnectionState());
-                child.addConnection(newCon);
-            }
+            child.addConnection(con.copy());
         }
 
-        // Add nodes from both parents
+        // Add nodes from both parents (ensure no duplicates)
         for (Node node : fittest.nodes) {
             if (!child.nodes.contains(node)) {
                 child.addNode(node);

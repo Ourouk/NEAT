@@ -16,7 +16,7 @@ public class Connection implements Comparable<Connection> {
     // The innovation number
     public int innovation;
 
-    public Connection(Node Input, Node Output,Integer weight) {
+    public Connection(Node Input, Node Output,float weight) {
         this.inputNode = Input;
         this.outputNode = Output;
         this.connectionState = State.ENABLED;
@@ -42,15 +42,23 @@ public class Connection implements Comparable<Connection> {
             this.connectionState = State.ENABLED;
         }
     }
-    public Integer getWeight() {
+    public float getWeight() {
         return weight;
     }
-    public void setWeight(Integer weight) {
+    public void setWeight(float weight) {
         this.weight = weight;
     }
     // Implement compareTo() method to define sorting based on age
     @Override
     public int compareTo(Connection other) {
         return Integer.compare(this.innovation, other.innovation);
+    }
+    
+    // Copy a connection
+    public Connection copy() {
+    	Connection copy = new Connection(this.inputNode, this.outputNode, this.weight);
+    	copy.innovation = this.innovation;
+    	copy.setConnectionState(this.getConnectionState());
+    	return copy;
     }
 }
