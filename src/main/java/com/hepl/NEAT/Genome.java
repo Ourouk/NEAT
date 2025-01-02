@@ -100,7 +100,7 @@ public class Genome {
         }
         //Set input nodes
         for(int i = 0; i < AppConfig.NEAT_INPUT_SIZE; i++){
-            getNode(i).setValue(i);
+            getNode(i).setValue(in[i]);
         }
         //Set bias node
         getNode(AppConfig.NEAT_INPUT_SIZE).setValue(1);
@@ -153,7 +153,7 @@ public class Genome {
     public void mutAddConnection(){
         //Select a random connection
         //TODO: Adjust the randomness of that selection
-    	Connection c = new Connection(nodes.get(rand.nextInt(nodes.size())),nodes.get(rand.nextInt(nodes.size())),rand.nextInt());
+    	Connection c = new Connection(nodes.get(rand.nextInt(nodes.size())),nodes.get(rand.nextInt(nodes.size())),rand.nextFloat());
         c.innovation=InnovationCounter.newInnovation();
 //    	connections.add(new Connection(nodes.get(rand.nextInt(nodes.size())),nodes.get(rand.nextInt(nodes.size())),rand.nextInt()));
         connections.add(c);
@@ -181,9 +181,9 @@ public class Genome {
         //Create a new node
         Node n = new Node(Node.Type.HIDDEN);
         //Create two new connections
-        Connection c1 = new Connection(c.getInputNode(),n,rand.nextInt());
+        Connection c1 = new Connection(c.getInputNode(),n,rand.nextFloat());
         c1.innovation = InnovationCounter.newInnovation();
-        Connection c2 = new Connection(n,c.getOutputNode(),rand.nextInt());
+        Connection c2 = new Connection(n,c.getOutputNode(),rand.nextFloat());
         c2.innovation = InnovationCounter.newInnovation();
         //Add the new node and connections
         nodes.add(n);

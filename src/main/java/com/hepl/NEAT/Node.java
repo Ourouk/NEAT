@@ -29,8 +29,8 @@ public class Node {
     }
     //This Wrapper is needed to get the value of the node
     public float getValue(){
-        System.out.println("Warning using fallback value calcultation method because of NaN value");
         if(Float.isNaN(this.value)){
+            System.out.println("Warning using fallback value calcultation method because of NaN value");
             float sum = 0;
             for(Connection c : incomingConnections){
                 sum  += c.getWeight() * c.getInputNode().getValue();
