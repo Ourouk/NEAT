@@ -30,11 +30,11 @@ public class SimpleGeneticAlgorithm {
 		FitnessManager = f;
 	}
 
-    public boolean runAlgorithm(int populationSize) {
+    public boolean runAlgorithm(int populationSize) throws Exception{
         //if (solution.length() != SimpleGeneticAlgorithm.solution.length) {
             //throw new RuntimeException("The solution needs to have " + SimpleGeneticAlgorithm.solution.length + " bytes");
         //} //Boom 
-        Population myPop = new Population(populationSize, true);
+        IPopulation myPop = new Population(populationSize, true);
 
         int generationCount = 1;
         while (myPop.getFittest().getFitness() < FitnessManager.getMaxFitness()) { //problème de taille
@@ -54,7 +54,7 @@ public class SimpleGeneticAlgorithm {
         return true;
     }
 
-    public Population evolvePopulation(Population pop) {
+    public IPopulation evolvePopulation(IPopulation pop) throws Exception {
         int elitismOffset;
         Population newPopulation = new Population(pop.getIndividuals().size(), false);
 		
@@ -75,9 +75,9 @@ public class SimpleGeneticAlgorithm {
 			case TOURNAMENT:
 
 				for (int i = elitismOffset; i < elitismOffset + (int)crossoveredPopulation; i++) { //First add the new individuals in the new population
-					Individual indiv1 = tournamentSelection(pop);
-					Individual indiv2 = tournamentSelection(pop);
-					Individual newIndiv = pop.crossover(indiv1, indiv2);
+					Iindividual indiv1 = tournamentSelection(pop);
+					Iindividual indiv2 = tournamentSelection(pop);
+					Iindividual newIndiv = pop.crossover(indiv1, indiv2);
 					newPopulation.getIndividuals().add(i, newIndiv);
 				}
 				
@@ -90,12 +90,13 @@ public class SimpleGeneticAlgorithm {
 			case  WHEEL:
 			
 				for (int i = elitismOffset; i < elitismOffset + (int)crossoveredPopulation; i++) { //First add the new individuals in the new population
-					Individual indiv1 = wheelSelection(pop);
-					Individual indiv2 = wheelSelection(pop);
+					Iindividual indiv1 = wheelSelection(pop);
+					Iindividual indiv2 = wheelSelection(pop);
 					while(indiv1.equals(indiv2)){
 						indiv2 = wheelSelection(pop);
 					}
-					Individual newIndiv = pop.crossover(indiv1, indiv2);
+					
+					Iindividual newIndiv = pop.crossover(indiv1, indiv2);
 					newPopulation.getIndividuals().add(i, newIndiv);
 				}
 				
@@ -115,18 +116,18 @@ public class SimpleGeneticAlgorithm {
     
 
 
-    private Individual tournamentSelection(Population pop) {
+    private Iindividual tournamentSelection(IPopulation pop) {
         Population tournament = new Population(tournamentSize, false);
         for (int i = 0; i < tournamentSize; i++) {
             int randomId = (int) (Math.random() * pop.getIndividuals().size());
             tournament.getIndividuals().add(i, pop.getIndividual(randomId));
         }
-        Individual fittest = tournament.getFittest();
+        Iindividual fittest = tournament.getFittest();
         return fittest;
     }
 
 		
-		private Individual wheelSelection(Population pop){
+		private Iindividual wheelSelection(IPopulation pop){
 			ArrayList<Integer> selectionWheel = new ArrayList<Integer>(pop.getIndividuals().size());
 				int totalFitness = 0;
 				for (int i = 0; i < pop.getIndividuals().size(); i++) 

@@ -13,43 +13,72 @@ public class NeatPoolAdapter implements IPopulation
     private Pool pop;
 
     @Override
-    public Individual getIndividual(int index) 
+    public Iindividual getIndividual(int index) 
     {
         return getIndividuals().get(index);   
     }  
 
     @Override
-    public List<Individual> getIndividuals() {
+    public List<Iindividual> getIndividuals() {
         
-        List<GenomeWithFitness> gf = new ArrayList<>();
+        List<Iindividual> ret = new ArrayList<>();
         for (Species species : pop.getSpecies()) 
         {
             for (GenomeWithFitness genome : species.getGenomes()) 
             {
-                gf.add(genome);
+                ret.add(new NeatGenomeAdapter(genome));
             }
         }
+
         //Must add Individual adapter to transform genome into individual
-        return null;
+        return ret;
 
     }
 
     @Override
-    public Individual getFittest() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getFittest'");
+    public Iindividual getFittest() 
+    {
+        GenomeWithFitness fittest = null;
+        int maxFitness = -1;
+        List<Iindividual> ret = new ArrayList<>();
+        for (Species species : pop.getSpecies()) 
+        {
+            for (GenomeWithFitness genome : species.getGenomes()) 
+            {
+                if(maxFitness <= genome.getFitness())
+                {
+                    maxFitness = (int)genome.getFitness();
+                    fittest = genome;
+                }
+            }
+        }
+        return new NeatGenomeAdapter(fittest);
     }
 
     @Override
-    public Individual crossover(Individual indiv1, Individual indiv2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'crossover'");
+    public Iindividual crossover(Iindividual Iindiv1, Iindividual Iindiv2) throws Exception 
+    {
+        if(!(Iindiv1 instanceof NeatGenomeAdapter && Iindiv2 instanceof NeatGenomeAdapter))
+        {
+            throw new Exception("This NEAT population received incorrect individuals");
+        }
+        NeatGenomeAdapter indiv1 = (NeatGenomeAdapter)Iindiv1;
+        NeatGenomeAdapter indiv2 = (NeatGenomeAdapter)Iindiv2;
+        
+        Genome g = pop.GenomeCrossover(indiv1.g.getGenome(), indiv2.g.getGenome(), indiv1.g.getFitness(), indiv2.g.getFitness());
+        return new NeatGenomeAdapter(new GenomeWithFitness(g, 0));
     }
 
     @Override
-    public void mutate(Individual indiv) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'mutate'");
+    public void mutate(Iindividual Iindiv) throws Exception  
+    {
+        if(!(Iindiv instanceof Individual))
+        {
+            throw new Exception("This NEAT population received incorrect individuals");
+        }
+        NeatGenomeAdapter indiv = (NeatGenomeAdapter)Iindiv;
+        throw new UnsupportedOperationException("Pool hasn't any definition for group mutation please implement before continueing");
+
     }
 
     

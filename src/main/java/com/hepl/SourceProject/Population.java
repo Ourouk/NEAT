@@ -17,19 +17,25 @@ public class Population implements IPopulation{
         }
     }
 
-    public Individual getIndividual(int index) {
+    public Iindividual getIndividual(int index) {
         return individuals.get(index);
     }
 
-    public List<Individual> getIndividuals() {
-        return individuals;
+    public List<Iindividual> getIndividuals() {
+        
+        List<Iindividual> ret = new ArrayList<>();
+        for (Individual individual : individuals)
+        {
+            ret.add(individual) ; 
+        }
+        return ret;
     }
 
     public Individual getFittest() {
         Individual fittest = individuals.get(0);
         for (int i = 0; i < individuals.size(); i++) {
-            if (fittest.getFitness() <= getIndividual(i).getFitness()) {
-                fittest = getIndividual(i);
+            if (fittest.getFitness() <= individuals.get(i).getFitness()) {
+                fittest = individuals.get(i);
             }
         }
         return fittest;
@@ -43,8 +49,14 @@ public class Population implements IPopulation{
     }
 
     @Override
-    public Individual crossover(Individual indiv1, Individual indiv2) {
+    public Iindividual crossover(Iindividual Iindiv1, Iindividual Iindiv2) throws Exception {
         //Choose the size of the biggest individuals
+        if(!(Iindiv1 instanceof Individual && Iindiv2 instanceof Individual))
+        {
+            throw new Exception("This byte population received incorrect individuals");
+        }
+        Individual indiv1 = (Individual)Iindiv1;
+        Individual indiv2 = (Individual)Iindiv2;
 		int newGeneLength = 0;
 		int minGeneLength = 0;
 		if(indiv1.getGeneLength()>=indiv2.getGeneLength()){
@@ -80,7 +92,14 @@ public class Population implements IPopulation{
     }
 
     @Override
-    public void mutate(Individual indiv) {
+    public void mutate(Iindividual Iindiv) throws Exception {
+        if(!(Iindiv instanceof Individual))
+        {
+            throw new Exception("This byte population received incorrect individuals");
+        }
+        Individual indiv = (Individual)Iindiv;
+
+
         for (int i = 0; i < indiv.getGeneLength(); i++) {
 			if (Math.random() <= SimpleGeneticAlgorithm.mutationRate) {
 				if (Math.random() < SimpleGeneticAlgorithm.changePriority) {

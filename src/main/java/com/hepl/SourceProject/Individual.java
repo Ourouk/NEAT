@@ -4,20 +4,11 @@
 */
 
 package com.hepl.SourceProject;
-public class Individual {
+public class Individual implements Iindividual{
 
     protected int defaultGeneLength = 64; //Size of gene is not anymore static
-    //private byte[] genes = new byte[defaultGeneLength];
     private byte[] genes;
     private int fitness = 0;
-
-    //public Individual() { //Keep defaultGeneLength bits
-		//genes = new byte[defaultGeneLength];
-        //for (int i = 0; i < genes.length; i++) {
-            //byte gene = (byte) Math.round(Math.random());
-            //genes[i] = gene;
-        //}
-    //}
     
         public Individual() { //Random bits
 		int length = (int) (Math.random()*((128 - 32) + 1)) + 32;

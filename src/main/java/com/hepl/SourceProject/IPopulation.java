@@ -5,14 +5,13 @@ import java.util.List;
 public interface IPopulation {
 
 
-    Individual getIndividual(int index);
+    Iindividual getIndividual(int index);
 
-    List<Individual> getIndividuals(); 
+    List<Iindividual> getIndividuals(); 
 
-    Individual getFittest();
+    Iindividual getFittest();
 
-    Individual crossover(Individual indiv1, Individual indiv2);
+    Iindividual crossover(Iindividual indiv1, Iindividual indiv2) throws Exception;
 
-     void mutate(Individual indiv);
-        
+    void mutate(Iindividual indiv) throws Exception;
 }
