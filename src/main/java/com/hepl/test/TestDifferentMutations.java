@@ -35,12 +35,12 @@ public class TestDifferentMutations {
 //		con54i5.innovation = 5;
 //		con15i6.innovation = 6;
 		
-		con14i1.innovation = InnovationCounter.newInnovation();
+		/*con14i1.innovation = InnovationCounter.newInnovation();
 		con24i2.innovation = InnovationCounter.newInnovation();
 		con34i3.innovation = InnovationCounter.newInnovation();
 		con25i4.innovation = InnovationCounter.newInnovation();
 		con54i5.innovation = InnovationCounter.newInnovation();
-		con15i6.innovation = InnovationCounter.newInnovation();
+		con15i6.innovation = InnovationCounter.newInnovation();*/
 		
 		con24i2.setConnectionState(Connection.State.DISABLED);
 		
@@ -56,7 +56,7 @@ public class TestDifferentMutations {
 		// Results
 		System.out.println("Default genome Connections:");
 		for (Connection con : genome.connections) {
-			System.out.println("Input node " + con.getInputNode().id + ", Output node " + con.getOutputNode().id + ", Innovation: " + con.innovation + ", Weight: " + con.getWeight() + ", State " + con.getConnectionState());
+			System.out.println("Input node " + con.getInputNode().id + ", Output node " + con.getOutputNode().id + ", Innovation: " + con.getInnovation() + ", Weight: " + con.getWeight() + ", State " + con.getConnectionState());
 		}
 				
 		// Change connection weight mutation
@@ -74,7 +74,7 @@ public class TestDifferentMutations {
 		// Results
 		System.out.println("Change weight mutation genome Connections:");
 		for (Connection con : weightGenome.connections) {
-			System.out.println("Input node " + con.getInputNode().id + ", Output node " + con.getOutputNode().id + ", Innovation: " + con.innovation + ", Weight: " + con.getWeight() + ", State " + con.getConnectionState());
+			System.out.println("Input node " + con.getInputNode().id + ", Output node " + con.getOutputNode().id + ", Innovation: " + con.getInnovation() + ", Weight: " + con.getWeight() + ", State " + con.getConnectionState());
 		}
 		
 		// Change connection state mutation
@@ -92,7 +92,7 @@ public class TestDifferentMutations {
 		// Results
 		System.out.println("Change state mutation genome Connections:");
 		for (Connection con : stateGenome.connections) {
-			System.out.println("Input node " + con.getInputNode().id + ", Output node " + con.getOutputNode().id + ", Innovation: " + con.innovation + ", Weight: " + con.getWeight() + ", State " + con.getConnectionState());
+			System.out.println("Input node " + con.getInputNode().id + ", Output node " + con.getOutputNode().id + ", Innovation: " + con.getInnovation() + ", Weight: " + con.getWeight() + ", State " + con.getConnectionState());
 		}
 		
 		// add connection mutation
@@ -110,7 +110,7 @@ public class TestDifferentMutations {
 		// Results
 		System.out.println("Add connection mutation genome Connections:");
 		for (Connection con : conGenome.connections) {
-			System.out.println("Input node " + con.getInputNode().id + ", Output node " + con.getOutputNode().id + ", Innovation: " + con.innovation + ", Weight: " + con.getWeight() + ", State " + con.getConnectionState());
+			System.out.println("Input node " + con.getInputNode().id + ", Output node " + con.getOutputNode().id + ", Innovation: " + con.getInnovation() + ", Weight: " + con.getWeight() + ", State " + con.getConnectionState());
 		}
 		
 		// Add node mutation
@@ -128,7 +128,7 @@ public class TestDifferentMutations {
 		// Results
 		System.out.println("Add node mutation genome Connections:");
 		for (Connection con : nodeGenome.connections) {
-			System.out.println("Input node " + con.getInputNode().id + ", Output node " + con.getOutputNode().id + ", Innovation: " + con.innovation + ", Weight: " + con.getWeight() + ", State " + con.getConnectionState());
+			System.out.println("Input node " + con.getInputNode().id + ", Output node " + con.getOutputNode().id + ", Innovation: " + con.getInnovation() + ", Weight: " + con.getWeight() + ", State " + con.getConnectionState());
 		}
 	}
 
