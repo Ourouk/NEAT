@@ -30,11 +30,11 @@ public class SimpleGeneticAlgorithm {
 		FitnessManager = f;
 	}
 
-    public boolean runAlgorithm(int populationSize) throws Exception{
+    public boolean runAlgorithm(IPopulation myPop) throws Exception{
         //if (solution.length() != SimpleGeneticAlgorithm.solution.length) {
             //throw new RuntimeException("The solution needs to have " + SimpleGeneticAlgorithm.solution.length + " bytes");
         //} //Boom 
-        IPopulation myPop = new Population(populationSize, true);
+        //IPopulation myPop = new Population(populationSize, true);
 
         int generationCount = 1;
         while (myPop.getFittest().getFitness() < FitnessManager.getMaxFitness()) { //problème de taille

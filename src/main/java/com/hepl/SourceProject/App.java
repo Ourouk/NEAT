@@ -30,12 +30,14 @@ public class App {
                 case 1:
                 SimpleByteFitness fitByte = new SimpleByteFitness("0100010010000011110001010101010000010000011000100100110000000000");
 			    SimpleGeneticAlgorithm simpleGeneticAlgorithm = new SimpleGeneticAlgorithm(fitByte);
-        		simpleGeneticAlgorithm.runAlgorithm(30); // population 20-30 (same src as cross-over rate). For WHEEL, 30 seems better than 20
+                Population pop1 = new Population(30, true);
+        		simpleGeneticAlgorithm.runAlgorithm(pop1); // population 20-30 (same src as cross-over rate). For WHEEL, 30 seems better than 20
                     	break;
                 case 2 :
                         SimpleByteFitness fitXOR = new SimpleByteFitness("0110");
                     	SimpleGeneticAlgorithm algoXOR = new SimpleGeneticAlgorithm(fitXOR);
-                    	algoXOR.runAlgorithm(10);
+                        Population pop2 = new Population(10, true);
+                    	algoXOR.runAlgorithm(pop2);
                     	break;
                 case 3:
                     boolean[][] m = {{false,true,false,true},{false,true,false,true},{true,true,false,true},{true,true,true,true},{true,true,true,true}};
@@ -59,7 +61,8 @@ public class App {
 
                     GameFitness gfit = new GameFitness(g);
                     SimpleGeneticAlgorithm sg = new SimpleGeneticAlgorithm(gfit);
-                    sg.runAlgorithm(3);
+                    Population pop3 = new Population(3, true);
+                    sg.runAlgorithm(pop3);
                     break;
                 case 0 :
                 default:
