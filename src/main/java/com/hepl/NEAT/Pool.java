@@ -283,9 +283,14 @@ public class Pool {
      */
     public void resetSpecies() { // at every new epoch
     	for (Species species : listOfSpecies) {
-    		species.reset();
+//    		species.reset();
+    		if (species.getGenomes().isEmpty()) {
+    			continue;
+    		}
     		
     		GenomeWithFitness newRepresentative = species.selectRandomGenome();
+    		species.reset(); // ! clear the list -> Exception
+
     		species.setRepresentativeGenome(newRepresentative);
     		
     		species.addGenome(species.getRepresentativeGenome());
