@@ -249,6 +249,17 @@ public class Pool {
     /*
      * SPECIATION
      */
+    public void resetSpecies() {
+    	for (Species species : listOfSpecies) {
+    		species.reset();
+    		
+    		GenomeWithFitness newRepresentative = species.selectRandomGenome();
+    		species.setRepresentativeGenome(newRepresentative);
+    		
+    		species.addGenome(species.getRepresentativeGenome());
+    	}
+    }
+    
     public void addSpecies(Species species) {
     	listOfSpecies.add(species);
     }
@@ -282,11 +293,6 @@ public class Pool {
     				foundSpecies = true;
     				break;
     			}
-    			
-    			// Delete empty species !!!!!!!
-    			if (species.getGenomes().isEmpty()) {
-    				listOfSpecies.remove(species);
-    			}
     		}
     		
     		if (!foundSpecies) {
@@ -304,5 +310,27 @@ public class Pool {
     			listOfSpecies.remove(species);
     		}
     	}
+    }
+    
+    public void removeEmptySpecies() {
+    	for (Species species :listOfSpecies) {
+    		if (species.getGenomes().isEmpty()) {
+    			listOfSpecies.remove(species);
+    		}
+    	}
+    }
+    
+    // Adjust fitness in all species
+    public void AdjustFitness() {
+    	for (Species species : listOfSpecies) {
+    		species.adjustFitness();
+    	}
+    }
+    
+    // Reproduce
+    public List<GenomeWithFitness> reproduce(int populationSize) {
+    	List<GenomeWithFitness> newPopulation = new ArrayList<GenomeWithFitness>();
+    	
+    	return newPopulation;
     }
 }

@@ -56,6 +56,10 @@ public class Species {
 		genomes.add(g);
 	}
 	
+	public void setRepresentativeGenome(GenomeWithFitness representativeGenome) {
+		this.representativeGenome = representativeGenome;
+	}
+
 	// Average fitness = (all the fitness of all the genomes) / (#genomes in the species)
 	public void calculateAverageFitness() {
 		float totalFitness = 0;
