@@ -5,7 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class Pool {
-    ArrayList<Genome> genomes = new ArrayList<Genome>();
+	private List<Species> listOfSpecies = new ArrayList<Species>();	
+//    ArrayList<Genome> genomes = new ArrayList<Genome>();
 
     /*
      * TOOLS
@@ -172,13 +173,17 @@ public class Pool {
     	return totalWeightDifference/matchingConnections.size();
     }
     
-	public float compatibilityDistance(Genome p1, Genome p2, int c1, int c2, int c3) {
-		// N = 1 for small genome (< than 20 genes)
+	public float compatibilityDistance(Genome p1, Genome p2, float c1, float c2, float c3) {
 		// Bad for performance, the three methods are almost identical		
-		int excessGenes = getExcessConnections(p1, p2).size();
-		int disjointGenes = getDisjointConnections(p1, p2).size();
-		float avgWeightDiff = averageWeightDifference(p1, p2);
-		return excessGenes * c1 + disjointGenes * c2 + avgWeightDiff * c3;
+		int excessGenes = getExcessConnections(p1, p2).size(); // E
+		int disjointGenes = getDisjointConnections(p1, p2).size(); // D
+		float avgWeightDiff = averageWeightDifference(p1, p2); // W
+		
+		// N = 1 for small genome (< than 20 genes)
+		int largestGenomeSize = Math.max(p1.connections.size(), p2.connections.size()); // N
+		largestGenomeSize = largestGenomeSize < 20 ? 1 : largestGenomeSize;
+		
+		return (excessGenes * c1 / largestGenomeSize) + (disjointGenes * c2 / largestGenomeSize) + avgWeightDiff * c3;
 	}
 
     /*
@@ -241,4 +246,63 @@ public class Pool {
         return child;
     }
 
+    /*
+     * SPECIATION
+     */
+    public void addSpecies(Species species) {
+    	listOfSpecies.add(species);
+    }
+    
+    public void addGenomeToSpecies(Species species, GenomeWithFitness genome) {
+    	species.addGenome(genome);
+    }
+    
+    // Create the specimens
+    public void speciate(List<GenomeWithFitness> genomes) {
+    	float c1 = 1f;
+    	float c2 = 1f;
+    	float c3 = 0.4f;
+    	
+    	float compatibilityThreshold = 3.0f;
+    	
+    	// Reset all the species
+    	for (Species species : listOfSpecies) {
+    		species.reset();
+    		species.selectRandomGenome();
+    	}
+    	
+    	// Assign genomes to species in case of delta < delta threshold, else create a new one
+    	for (GenomeWithFitness genome : genomes) {
+    		boolean foundSpecies = false;
+    		
+    		for (Species species : listOfSpecies) {
+    			float compatibilityDistance = compatibilityDistance(genome.getGenome(), species.getRepresentativeGenome().getGenome(), c1, c2, c3);
+    			if (compatibilityDistance < compatibilityThreshold) {
+    				species.addGenome(genome);
+    				foundSpecies = true;
+    				break;
+    			}
+    			
+    			// Delete empty species !!!!!!!
+    			if (species.getGenomes().isEmpty()) {
+    				listOfSpecies.remove(species);
+    			}
+    		}
+    		
+    		if (!foundSpecies) {
+    			listOfSpecies.add(new Species(genome));
+    		}
+    	}
+    }
+    
+    // Remove stagnant species if it doesn't contains the fittest genome
+    public void removeStagnantSpecies(float bestFittestInPopulation, int maxStagnation) {
+    	for (Species species :listOfSpecies) {
+    		boolean isStagnant = species.getStagnationCounter() > maxStagnation;
+    		
+    		if (isStagnant && !species.haveFittestGenome(bestFittestInPopulation)) {
+    			listOfSpecies.remove(species);
+    		}
+    	}
+    }
 }
