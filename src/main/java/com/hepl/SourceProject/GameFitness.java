@@ -8,7 +8,8 @@ public class GameFitness implements IFitness {
         solution = g;
     }
     @Override
-    public int getFitness(Individual individual) {
+    public int getFitness(Individual individual)
+    {
         float score = solution.PlayStatic(individual.getGenes());
         System.out.println(score);
         int fitness = Math.round(1000f/(score));
@@ -16,9 +17,14 @@ public class GameFitness implements IFitness {
 		return Math.max(fitness,1);
     }
 
+
     @Override
     public int getMaxFitness() {
         return 999;
+    }
+    @Override
+    public int getFitness(NeatGenomeAdapter individual) {
+        
     }
     
 }

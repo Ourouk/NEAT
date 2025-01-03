@@ -44,4 +44,22 @@ public class SimpleByteFitness implements IFitness {
 			}
 		}
 	}
+
+	@Override
+	public int getFitness(NeatGenomeAdapter individual) {
+		float fitness = 0;
+		for (int i = 0; i < solution.length; i++) 
+		{
+			String strInput =Integer.toBinaryString(i);
+			float[] in = new float[strInput.length()];
+			for (int j = 0; j < strInput.length();j++) 
+			{
+				in[j] = (float)Integer.parseInt(String.valueOf(strInput.charAt(j)));
+			}
+			fitness += 1/((Math.abs(solution[i] - individual.g.getGenome().getOutputs(in)[0]))+1);
+		}
+		//Set the max fitness to solution.length+128
+		fitness *= (solution.length+128.0)/(solution.length);
+		return (int )fitness;
+	}
 }
