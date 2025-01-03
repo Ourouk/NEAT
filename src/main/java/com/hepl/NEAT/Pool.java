@@ -58,6 +58,11 @@ public class Pool {
     	
     	return totalFitness;
     }
+    
+    // return the current population
+    public List<Species> getListOfSpecies() {
+		return listOfSpecies;
+	}
 
     /*
      * MATCHING
