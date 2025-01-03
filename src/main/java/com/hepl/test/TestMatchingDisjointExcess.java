@@ -29,13 +29,13 @@ public class TestMatchingDisjointExcess {
 		Connection p1Con25i4 = new Connection(p1Node2, p1Node5, 1);
 		Connection p1Con54i5 = new Connection(p1Node5, p1Node4, 1);
 		Connection p1Con15i8 = new Connection(p1Node1, p1Node5, 1);
-		
+		/* 
 		p1Con14i1.innovation = 1;
 		p1Con24i2.innovation = 2;
 		p1Con34i3.innovation = 3;
 		p1Con25i4.innovation = 4;
 		p1Con54i5.innovation = 5;
-		p1Con15i8.innovation = 8;
+		p1Con15i8.innovation = 8;*/
 		
 		p1Con24i2.setConnectionState(Connection.State.DISABLED);
 		
@@ -75,7 +75,7 @@ public class TestMatchingDisjointExcess {
 		Connection p2Con35i9 = new Connection(p2Node3, p2Node5, 1);
 		Connection p2Con16i10 = new Connection(p2Node1, p2Node6, 1);
 		
-		p2Con14i1.innovation = 1;
+		/*p2Con14i1.innovation = 1;
 		p2Con24i2.innovation = 2;
 		p2Con34i3.innovation = 3;
 		p2Con25i4.innovation = 4;
@@ -83,7 +83,7 @@ public class TestMatchingDisjointExcess {
 		p2Con56i6.innovation = 6;
 		p2Con64i7.innovation = 7;
 		p2Con35i9.innovation = 9;
-		p2Con16i10.innovation = 10;
+		p2Con16i10.innovation = 10;*/
 		
 		p2Con24i2.setConnectionState(Connection.State.DISABLED);
 		p2Con54i5.setConnectionState(Connection.State.DISABLED);
@@ -108,15 +108,15 @@ public class TestMatchingDisjointExcess {
         List<Connection> excessConnections = pool.getExcessConnections(parent1, parent2);
         
         for (Connection con : matchingConnections) {
-        	System.out.println("match "+con.innovation);
+        	System.out.println("match "+con.getInnovation());
         }
         
         for (Connection con : disjointConnections) {
-        	System.out.println("disjoint "+con.innovation);
+        	System.out.println("disjoint "+con.getInnovation());
         }
         
         for (Connection con : excessConnections) {
-        	System.out.println("excess "+con.innovation);
+        	System.out.println("excess "+con.getInnovation());
         }
 	}
 }

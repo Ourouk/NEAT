@@ -75,19 +75,21 @@ public class Genome {
         for(int i = 0; i < AppConfig.NEAT_HIDDEN_SIZE; i++){
             Node n = new Node(Node.Type.HIDDEN);
             int node_id = AppConfig.NEAT_INPUT_SIZE+AppConfig.NEAT_OUTPUT_SIZE+i+1;
+            addNode(node_id,n);
             //Add all input as incoming connections
             for(int j = 0; j < AppConfig.NEAT_INPUT_SIZE; j++){
                 Connection c = new Connection(getNode(j),n,rand.nextInt());
                 addConnection(c);
                 n.addIncomingConnection(c);
+                getNode(j).addOutgoingConnection(c);
             }
             //Add all output as outgoing connections
             for(int j = AppConfig.NEAT_INPUT_SIZE; j < AppConfig.NEAT_INPUT_SIZE+AppConfig.NEAT_OUTPUT_SIZE; j++){
                 Connection c = new Connection(n,getNode(j),rand.nextInt());
                 addConnection(c);
                 n.addOutgoingConnection(c);
+                getNode(j).addIncomingConnection(c);
             }
-            addNode(node_id,n);
         }
     }
     //Core logic of using the network
@@ -153,8 +155,9 @@ public class Genome {
     public void mutAddConnection(){
         //Select a random connection
         //TODO: Adjust the randomness of that selection
-    	Connection c = new Connection(nodes.get(rand.nextInt(nodes.size())),nodes.get(rand.nextInt(nodes.size())),rand.nextFloat());
-        c.innovation=InnovationCounter.newInnovation();
+
+    	Connection c = new Connection(nodes.get(rand.nextInt(nodes.size())),nodes.get(rand.nextInt(nodes.size())),rand.nextInt());
+
 //    	connections.add(new Connection(nodes.get(rand.nextInt(nodes.size())),nodes.get(rand.nextInt(nodes.size())),rand.nextInt()));
         connections.add(c);
     }
@@ -181,10 +184,11 @@ public class Genome {
         //Create a new node
         Node n = new Node(Node.Type.HIDDEN);
         //Create two new connections
-        Connection c1 = new Connection(c.getInputNode(),n,rand.nextFloat());
-        c1.innovation = InnovationCounter.newInnovation();
-        Connection c2 = new Connection(n,c.getOutputNode(),rand.nextFloat());
-        c2.innovation = InnovationCounter.newInnovation();
+
+        Connection c1 = new Connection(c.getInputNode(),n,rand.nextInt());
+        Connection c2 = new Connection(n,c.getOutputNode(),rand.nextInt());
+
+
         //Add the new node and connections
         nodes.add(n);
         connections.add(c1);
@@ -229,7 +233,7 @@ public class Genome {
 
             // Write connections
             for (Connection connection : connections) {
-                String label = String.format("Weight: %f\nInnovation: %d", connection.getWeight(), connection.innovation);
+                String label = String.format("Weight: %f\nInnovation: %d", connection.getWeight(), connection.getInnovation());
                 writer.write(String.format("\t%d -> %d [label=\"%s\", style=%s];\n", 
 //                    nodes.indexOf(connection.getInputNode()),
 //                    nodes.indexOf(connection.getOutputNode()),

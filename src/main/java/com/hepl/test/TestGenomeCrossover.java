@@ -27,12 +27,14 @@ public class TestGenomeCrossover { // based on p109 of the paper and hydrozoa YT
 		Connection p1Con54i5 = new Connection(p1Node5H, p1Node4O, 1);
 		Connection p1Con15i8 = new Connection(p1Node1I, p1Node5H, 1);
 		
-		p1Con14i1.innovation = 1;
-		p1Con24i2.innovation = 2;
-		p1Con34i3.innovation = 3;
-		p1Con25i4.innovation = 4;
-		p1Con54i5.innovation = 5;
-		p1Con15i8.innovation = 8;
+
+
+		// p1Con14i1.innovation = 1;
+		// p1Con24i2.innovation = 2;
+		// p1Con34i3.innovation = 3;
+		// p1Con25i4.innovation = 4;
+		// p1Con54i5.innovation = 5;
+		// p1Con15i8.innovation = 8;
 		
 		p1Con24i2.setConnectionState(Connection.State.DISABLED);
 		
@@ -72,6 +74,7 @@ public class TestGenomeCrossover { // based on p109 of the paper and hydrozoa YT
 		Connection p2Con35i9 = new Connection(p2Node3I, p2Node5H, 1);
 		Connection p2Con16i10 = new Connection(p2Node1I, p2Node6H, 1);
 		
+		/*
 		p2Con14i1.innovation = 1;
 		p2Con24i2.innovation = 2;
 		p2Con34i3.innovation = 3;
@@ -80,7 +83,7 @@ public class TestGenomeCrossover { // based on p109 of the paper and hydrozoa YT
 		p2Con56i6.innovation = 6;
 		p2Con64i7.innovation = 7;
 		p2Con35i9.innovation = 9;
-		p2Con16i10.innovation = 10;
+		p2Con16i10.innovation = 10;*/
 		
 		p2Con24i2.setConnectionState(Connection.State.DISABLED);
 		p2Con54i5.setConnectionState(Connection.State.DISABLED);
@@ -128,7 +131,7 @@ public class TestGenomeCrossover { // based on p109 of the paper and hydrozoa YT
 		Connection rCon15i8 = new Connection(rNode1I, rNode5H, 1);
 		Connection rCon35i9 = new Connection(rNode3I, rNode5H, 1);
 		Connection rCon16i10 = new Connection(rNode1I, rNode6H, 1);
-		
+		/* 
 		rCon14i1.innovation = 1;
 		rCon24i2.innovation = 2;
 		rCon34i3.innovation = 3;
@@ -138,7 +141,7 @@ public class TestGenomeCrossover { // based on p109 of the paper and hydrozoa YT
 		rCon64i7.innovation = 7;
 		rCon15i8.innovation = 8;
 		rCon35i9.innovation = 9;
-		rCon16i10.innovation = 10;
+		rCon16i10.innovation = 10;*/
 		
 		rCon24i2.setConnectionState(Connection.State.DISABLED);
 		rCon54i5.setConnectionState(Connection.State.DISABLED);
@@ -168,17 +171,17 @@ public class TestGenomeCrossover { // based on p109 of the paper and hydrozoa YT
 		// Results
 		System.out.println("Parent 1 Connections:");
 		for (Connection con : parent1.connections) {
-			System.out.println("Input node " + con.getInputNode().id + ", Output node " + con.getOutputNode().id + ", Innovation: " + con.innovation + ", Weight: " + con.getWeight() + ", State " + con.getConnectionState());
+			System.out.println("Input node " + con.getInputNode().id + ", Output node " + con.getOutputNode().id + ", Innovation: " + con.getInnovation() + ", Weight: " + con.getWeight() + ", State " + con.getConnectionState());
 		}
 
 		System.out.println("\nParent 2 Connections:");
 		for (Connection con : parent2.connections) {
-			System.out.println("Input node " + con.getInputNode().id + ", Output node " + con.getOutputNode().id + ", Innovation: " + con.innovation + ", Weight: " + con.getWeight() + ", State " + con.getConnectionState());
+			System.out.println("Input node " + con.getInputNode().id + ", Output node " + con.getOutputNode().id + ", Innovation: " + con.getInnovation() + ", Weight: " + con.getWeight() + ", State " + con.getConnectionState());
 		}
 
 		System.out.println("\nChild Connections:");
 		for (Connection con : child.connections) {
-			System.out.println("Input node " + con.getInputNode().id + ", Output node " + con.getOutputNode().id + ", Innovation: " + con.innovation + ", Weight: " + con.getWeight() + ", State " + con.getConnectionState());
+			System.out.println("Input node " + con.getInputNode().id + ", Output node " + con.getOutputNode().id + ", Innovation: " + con.getInnovation() + ", Weight: " + con.getWeight() + ", State " + con.getConnectionState());
 		}
 		
 	}

@@ -14,13 +14,18 @@ public class Connection implements Comparable<Connection> {
     // The multiplier used when using this connection
     private float weight;
     // The innovation number
-    public int innovation;
+    private int innovation;
 
     public Connection(Node Input, Node Output,float weight) {
         this.inputNode = Input;
         this.outputNode = Output;
         this.connectionState = State.ENABLED;
         this.weight = weight;
+        this.innovation = InnovationCounter.newInnovation(Input.id,Output.id);
+    }
+    public int getInnovation()
+    {
+        return innovation;
     }
 
     public Node getInputNode() {
@@ -61,5 +66,21 @@ public class Connection implements Comparable<Connection> {
     	copy.innovation = this.innovation;
     	copy.setConnectionState(this.getConnectionState());
     	return copy;
+    }
+    public boolean IsValid()
+    {
+        if(outputNode.type == Node.Type.INPUT)
+        {
+            return false;
+        }
+        if(inputNode.type == Node.Type.OUTPUT)
+        {
+            return false;
+        }
+        if(outputNode.type == Node.Type.OUTPUT)
+        {
+            return true;
+        }
+        return inputNode.id < outputNode.id;
     }
 }

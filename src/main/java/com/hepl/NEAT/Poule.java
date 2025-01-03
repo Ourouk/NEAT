@@ -10,13 +10,13 @@ public class Poule {
      * TOOLS
      */
     private List<Connection> sortConnectionsByInnovation(List<Connection> con) {
-        con.sort((a, b) -> Integer.compare(a.innovation, b.innovation));
+        con.sort((a, b) -> Integer.compare(a.getInnovation(), b.getInnovation()));
         return con;
     }
 
     private Connection findConnectionByInnovation(List<Connection> connections, int innovation) {
         for (Connection con : connections) {
-            if (con.innovation == innovation) {
+            if (con.getInnovation() == innovation) {
                 return con;
             }
         }
@@ -34,7 +34,7 @@ public class Poule {
 
         for (Connection con1 : p1Connections) {
             for (Connection con2 : p2Connections) {
-                if (con1.innovation == con2.innovation) {
+                if (con1.getInnovation() == con2.getInnovation()) {
                     matchingConnections.add(con1);
                     break;
                 }
@@ -49,17 +49,17 @@ public class Poule {
         List<Connection> p1Connections = sortConnectionsByInnovation(new ArrayList<>(p1.connections));
         List<Connection> p2Connections = sortConnectionsByInnovation(new ArrayList<>(p2.connections));
 
-        int maxInnovationP2 = p2Connections.isEmpty() ? 0 : p2Connections.get(p2Connections.size() - 1).innovation;
-        int maxInnovationP1 = p1Connections.isEmpty() ? 0 : p1Connections.get(p1Connections.size() - 1).innovation;
+        int maxInnovationP2 = p2Connections.isEmpty() ? 0 : p2Connections.get(p2Connections.size() - 1).getInnovation();
+        int maxInnovationP1 = p1Connections.isEmpty() ? 0 : p1Connections.get(p1Connections.size() - 1).getInnovation();
 
         for (Connection con1 : p1Connections) {
-            if (findConnectionByInnovation(p2Connections, con1.innovation) == null && con1.innovation <= maxInnovationP2) {
+            if (findConnectionByInnovation(p2Connections, con1.getInnovation()) == null && con1.getInnovation() <= maxInnovationP2) {
                 disjointConnections.add(con1);
             }
         }
 
         for (Connection con2 : p2Connections) {
-            if (findConnectionByInnovation(p1Connections, con2.innovation) == null && con2.innovation <= maxInnovationP1) {
+            if (findConnectionByInnovation(p1Connections, con2.getInnovation()) == null && con2.getInnovation() <= maxInnovationP1) {
                 disjointConnections.add(con2);
             }
         }
@@ -72,17 +72,17 @@ public class Poule {
         List<Connection> p1Connections = sortConnectionsByInnovation(new ArrayList<>(p1.connections));
         List<Connection> p2Connections = sortConnectionsByInnovation(new ArrayList<>(p2.connections));
 
-        int maxInnovationP2 = p2Connections.isEmpty() ? 0 : p2Connections.get(p2Connections.size() - 1).innovation;
-        int maxInnovationP1 = p1Connections.isEmpty() ? 0 : p1Connections.get(p1Connections.size() - 1).innovation;
+        int maxInnovationP2 = p2Connections.isEmpty() ? 0 : p2Connections.get(p2Connections.size() - 1).getInnovation();
+        int maxInnovationP1 = p1Connections.isEmpty() ? 0 : p1Connections.get(p1Connections.size() - 1).getInnovation();
 
         for (Connection con1 : p1Connections) {
-            if (con1.innovation > maxInnovationP2) {
+            if (con1.getInnovation() > maxInnovationP2) {
                 excessConnections.add(con1);
             }
         }
 
         for (Connection con2 : p2Connections) {
-            if (con2.innovation > maxInnovationP1) {
+            if (con2.getInnovation() > maxInnovationP1) {
                 excessConnections.add(con2);
             }
         }
@@ -107,8 +107,10 @@ public class Poule {
 
         // Add matching connections with averaged weights
         for (Connection con1 : matchingConnections) {
-            Connection con2 = findConnectionByInnovation(other.connections, con1.innovation);
+
+            Connection con2 = findConnectionByInnovation(other.connections, con1.getInnovation());
             Connection newCon = con1.clone();
+
             newCon.setWeight((con1.getWeight() + con2.getWeight()) / 2);
             newCon.setConnectionState(Math.random() > 0.5 ? con1.getConnectionState() : con2.getConnectionState());
             child.addConnection(newCon);
