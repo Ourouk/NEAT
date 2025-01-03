@@ -225,4 +225,33 @@ public class Game
     {
         PlayerPos = StartPos.clone();
     }
+    public int[] getSurounding()
+    {
+        int[] ret = new int[9];
+        ret[0] = GetMap(PlayerPos[0]-1, PlayerPos[1]-1)? 0 : 1;
+        ret[1] = GetMap(PlayerPos[0], PlayerPos[1]-1)? 0 : 1;
+        ret[2] = GetMap(PlayerPos[0]+1, PlayerPos[1]-1)? 0 : 1;
+
+        ret[3] = GetMap(PlayerPos[0]-1, PlayerPos[1])? 0 : 1;
+        ret[4] = GetMap(PlayerPos[0], PlayerPos[1])? 0 : 1;
+        ret[5] = GetMap(PlayerPos[0]+1, PlayerPos[1])? 0 : 1;
+
+        ret[6] = GetMap(PlayerPos[0]-1, PlayerPos[1]+1)? 0 : 1;
+        ret[7] = GetMap(PlayerPos[0], PlayerPos[1]+1)? 0 : 1;
+        ret[8] = GetMap(PlayerPos[0]+1, PlayerPos[1]+1)? 0 : 1;
+        return ret;
+    }
+    public void Move(float[] cmd)
+    {
+        byte[] b = new byte[3];
+        for (int i = 0; i < 3; i++)
+        {
+            b[i]= cmd[i] < 0.5 ? (byte)0 : (byte)1;
+        }
+        Move(b);  
+    }
+    public int getPlayerValue()
+    {
+        return ValueMap[PlayerPos[0]][PlayerPos[1]];
+    }
 }
