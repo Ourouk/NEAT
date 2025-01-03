@@ -75,19 +75,21 @@ public class Genome {
         for(int i = 0; i < AppConfig.NEAT_HIDDEN_SIZE; i++){
             Node n = new Node(Node.Type.HIDDEN);
             int node_id = AppConfig.NEAT_INPUT_SIZE+AppConfig.NEAT_OUTPUT_SIZE+i+1;
+            addNode(node_id,n);
             //Add all input as incoming connections
             for(int j = 0; j < AppConfig.NEAT_INPUT_SIZE; j++){
                 Connection c = new Connection(getNode(j),n,rand.nextInt());
                 addConnection(c);
                 n.addIncomingConnection(c);
+                getNode(j).addOutgoingConnection(c);
             }
             //Add all output as outgoing connections
             for(int j = AppConfig.NEAT_INPUT_SIZE; j < AppConfig.NEAT_INPUT_SIZE+AppConfig.NEAT_OUTPUT_SIZE; j++){
                 Connection c = new Connection(n,getNode(j),rand.nextInt());
                 addConnection(c);
                 n.addOutgoingConnection(c);
+                getNode(j).addIncomingConnection(c);
             }
-            addNode(node_id,n);
         }
     }
     //Core logic of using the network
