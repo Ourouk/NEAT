@@ -102,7 +102,7 @@ public class Genome {
         }
         //Set input nodes
         for(int i = 0; i < AppConfig.NEAT_INPUT_SIZE; i++){
-            getNode(i).setValue(i);
+            getNode(i).setValue(in[i]);
         }
         //Set bias node
         getNode(AppConfig.NEAT_INPUT_SIZE).setValue(1);
@@ -155,7 +155,9 @@ public class Genome {
     public void mutAddConnection(){
         //Select a random connection
         //TODO: Adjust the randomness of that selection
+
     	Connection c = new Connection(nodes.get(rand.nextInt(nodes.size())),nodes.get(rand.nextInt(nodes.size())),rand.nextInt());
+
 //    	connections.add(new Connection(nodes.get(rand.nextInt(nodes.size())),nodes.get(rand.nextInt(nodes.size())),rand.nextInt()));
         connections.add(c);
     }
@@ -182,8 +184,11 @@ public class Genome {
         //Create a new node
         Node n = new Node(Node.Type.HIDDEN);
         //Create two new connections
+
         Connection c1 = new Connection(c.getInputNode(),n,rand.nextInt());
         Connection c2 = new Connection(n,c.getOutputNode(),rand.nextInt());
+
+
         //Add the new node and connections
         nodes.add(n);
         connections.add(c1);
@@ -192,18 +197,19 @@ public class Genome {
     }
     
     // copy the genome
-    public Genome copy() {
+    @Override
+    public Genome clone() {
     	Genome copy = new Genome();
     	
     	// nodes
     	for (Node node : nodes) {
-    		Node newNode = node.copy();
+    		Node newNode = node.clone();
     		copy.addNode(newNode);
     	}
     	
     	// connections
     	for (Connection con : connections) {
-    		Connection newCon = con.copy();
+    		Connection newCon = con.clone();
     		copy.addConnection(newCon);
     	}
     	return copy;

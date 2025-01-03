@@ -29,8 +29,8 @@ public class Node {
     }
     //This Wrapper is needed to get the value of the node
     public float getValue(){
-        System.out.println("Warning using fallback value calcultation method because of NaN value");
         if(Float.isNaN(this.value)){
+            System.out.println("Warning using fallback value calcultation method because of NaN value");
             float sum = 0;
             for(Connection c : incomingConnections){
                 sum  += c.getWeight() * c.getInputNode().getValue();
@@ -56,8 +56,8 @@ public class Node {
         outgoingConnections.add(connection);
         }
     }
-    
-    public Node copy() {
+    @Override
+    public Node clone() {
     	Node copy = new Node(this.type);
     	copy.id = this.id;
     	return copy;

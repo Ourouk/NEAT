@@ -58,9 +58,10 @@ public class Connection implements Comparable<Connection> {
     public int compareTo(Connection other) {
         return Integer.compare(this.innovation, other.innovation);
     }
-    
+
     // Copy a connection
-    public Connection copy() {
+    @Override
+    public Connection clone() {
     	Connection copy = new Connection(this.inputNode, this.outputNode, this.weight);
     	copy.innovation = this.innovation;
     	copy.setConnectionState(this.getConnectionState());
