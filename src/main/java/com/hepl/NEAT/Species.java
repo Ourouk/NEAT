@@ -97,11 +97,11 @@ public class Species {
 		genomes.sort(Comparator.comparing(GenomeWithFitness::getFitness).reversed());
 	}
 	
-	// Remove old and weak genomes
-	public void removeOldWeakGenome() {
-		float percentageToKeep = 0.5f; // if 50% -> divide by 2, if 0%, keep the best
+	// Remove weak genomes
+	public void removeWeakGenome() {
+		// if 50% -> divide by 2, if 0%, keep the best
 		this.sortGenomesByFitness();
-		int indexToKeep = Math.max(1, (int)(genomes.size() * percentageToKeep));
+		int indexToKeep = Math.max(1, (int)(genomes.size() * AppConfig.NEAT_PERCENTAGE_TO_KEEP));
 		
 		for (int i = indexToKeep; i < genomes.size(); i++) {
 			genomes.remove(i);

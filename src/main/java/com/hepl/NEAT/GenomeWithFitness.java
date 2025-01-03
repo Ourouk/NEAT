@@ -1,5 +1,7 @@
 package com.hepl.NEAT;
 
+import java.util.Random;
+
 public class GenomeWithFitness { // doesn't modify the genome class -> based on hydrozoa YT videos
 	private float fitness;
 	private Genome genome;
@@ -19,5 +21,10 @@ public class GenomeWithFitness { // doesn't modify the genome class -> based on 
 	
 	public Genome getGenome() {
 		return genome;
+	}
+	
+	// evaluate the fitness of the genome
+	public float evaluateFitness(Genome genome) {
+		return new Random().nextFloat();
 	}
 }
