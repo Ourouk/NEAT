@@ -39,7 +39,7 @@ public class Pool {
     }
     
     // what is the best fitness through the whole population ? 
-    private float getBestFitness() {
+    public float getBestFitness() {
     	float bestFitness = 0f;
     	for (Species species : listOfSpecies) {
     		bestFitness = Math.max(bestFitness, species.getBestFitnessInside());
@@ -340,11 +340,16 @@ public class Pool {
     	resetSpecies();
     	
     	// Assign genomes to species in case of delta < delta threshold, else create a new one
+//    	System.out.println("Speciating genomes...");
+    	
+    	int genomeIndex = 1;
     	for (GenomeWithFitness genome : genomes) {
     		boolean foundSpecies = false;
     		
     		for (Species species : listOfSpecies) {
     			float compatibilityDistance = compatibilityDistance(genome.getGenome(), species.getRepresentativeGenome().getGenome());
+                // Log the compatibility distance
+    			System.out.println("Distance to species representative: " + compatibilityDistance);
     			if (compatibilityDistance < AppConfig.NEAT_COMPATIBILITY_THRESHOLD) {
     				species.addGenome(genome);
     				foundSpecies = true;
@@ -354,8 +359,11 @@ public class Pool {
     		
     		if (!foundSpecies) {
     			listOfSpecies.add(new Species(genome));
+    	        System.out.println("New species created for genome " + genomeIndex);
     		}
+    		genomeIndex++;
     	}
+//    	System.out.println("Total species after speciation: " + listOfSpecies.size());
     }
     
     /*
@@ -367,9 +375,14 @@ public class Pool {
     	Random rand = new Random();
     	float totalAdjustedFitness = getTotalAdjustedFitness(); // protect innovations and allocate resources in function
     	
+    	int remainingChild = populationSize;
+    	
     	for (Species species : listOfSpecies) {
 //    		int childNumber = populationSize;
     		int childNumber = (int) ((species.getAverageFitness() / totalAdjustedFitness) * populationSize); // biaised on the fitness
+    		
+    		childNumber = Math.min(childNumber, remainingChild); // don't overflow the population size
+    		remainingChild -= childNumber;
     		
     		for (int i = 0; i < childNumber; i++) {
     			Genome childGenome;
@@ -380,20 +393,26 @@ public class Pool {
     				GenomeWithFitness parent2 = species.selectRandomGenome();
     				
     				childGenome = GenomeCrossover(parent1.getGenome(), parent2.getGenome(), parent1.getFitness(), parent2.getFitness());
+//    				System.out.println("Applying crossover");
     			} else { // ...
     				GenomeWithFitness parent = species.selectRandomGenome();
     				childGenome = parent.getGenome().clone();
+//    				System.out.println("Applying");
     			}
     			
     			// Mutations
+//    			System.out.println("Applying mutation...");
     			if (rand.nextFloat() < AppConfig.NEAT_WEIGHT_MUTATION_RATE) {
     				childGenome.mutChangeConnectionWeight();
+//    			    System.out.println("Weight mutation applied.");
     			}
     			if (rand.nextFloat() < AppConfig.NEAT_CONNECTION_MUTATION_RATE) {
     				childGenome.mutAddConnection();
+//    			    System.out.println("Connection mutation applied.");
     			}
     			if (rand.nextFloat() < AppConfig.NEAT_NODE_MUTATION_RATE) {
     				childGenome.mutAddNode();
+//    			    System.out.println("Node mutation applied.");
     			}
     			
     			newPopulation.add(new GenomeWithFitness(childGenome, 0));
@@ -421,23 +440,45 @@ public class Pool {
     		System.out.println("Geneartion: " + i);
     		
     		// adjust the fitness and remove stagnants species and weak genomes
+//            System.out.println("Adjusting fitness for all species...");
     		adjustFitnessForAllSpecies();
+//            System.out.println("Removing stagnant species...");
     		removeStagnantSpecies(getBestFitness(), AppConfig.NEAT_MAX_STAGNATION);
+//            System.out.println("Removing weak genomes...");
     		removeWeakGenomesForAllSpecies();
     		
+    		 // Log species and genome count before reproduction
+//            int totalGenomesBefore = listOfSpecies.stream().mapToInt(s -> s.getGenomes().size()).sum();
+//            System.out.println("Species count before reproduction: " + listOfSpecies.size());
+//            System.out.println("Total genomes before reproduction: " + totalGenomesBefore);
+
+    		
     		// generate the population
+//            System.out.println("Generating the next generation...");
     		int populationSize = AppConfig.NEAT_POPULATION_SIZE;
     		List<GenomeWithFitness> nextGeneration = reproduce(populationSize);
     		
     		// placed genomes inside species or create species
+//            System.out.println("Speciating the next generation...");
     		speciate(nextGeneration);
     		
+    		 // Log species and genome count after speciation
+//            int totalGenomesAfter = listOfSpecies.stream().mapToInt(s -> s.getGenomes().size()).sum();
+//            System.out.println("Species count after speciation: " + listOfSpecies.size());
+//            System.out.println("Total genomes after speciation: " + totalGenomesAfter);
+
+//            System.out.println("Evaluating fitness...");
     		for (Species species : listOfSpecies) {
     			for (GenomeWithFitness genome : species.getGenomes()) {
     				float fitness = genome.evaluateFitness(genome.getGenome()); // TO BE IMPLEMENTED
     				genome.setFitness(fitness);
     			}
     		}
+    		
+    	     // Log the best fitness in this generation
+            float currentBestFitness = getBestFitness();
+            System.out.println("Best fitness in this generation: " + currentBestFitness);
+
     		if (getBestFitness() >= fitnessThreshold) {
     			System.out.println("Solution found in generation: " + i);
     			break;
