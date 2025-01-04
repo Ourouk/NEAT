@@ -78,17 +78,19 @@ public class Genome {
             addNode(node_id,n);
             //Add all input as incoming connections
             for(int j = 0; j < AppConfig.NEAT_INPUT_SIZE; j++){
-                Connection c = new Connection(getNode(j),n,Connection.randomWeight());
+                Node m = getNode(j);
+                Connection c = new Connection(m,n,Connection.randomWeight());
                 addConnection(c);
                 n.addIncomingConnection(c);
-                getNode(j).addOutgoingConnection(c);
+                m.addOutgoingConnection(c);
             }
             //Add all output as outgoing connections
             for(int j = AppConfig.NEAT_INPUT_SIZE; j < AppConfig.NEAT_INPUT_SIZE+AppConfig.NEAT_OUTPUT_SIZE; j++){
-                Connection c = new Connection(n,getNode(j),Connection.randomWeight());
+                Node m = getNode(j);
+                Connection c = new Connection(n,m,Connection.randomWeight());
                 addConnection(c);
                 n.addOutgoingConnection(c);
-                getNode(j).addIncomingConnection(c);
+                m.addIncomingConnection(c);
             }
         }
     }
