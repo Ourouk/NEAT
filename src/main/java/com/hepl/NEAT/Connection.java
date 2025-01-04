@@ -1,5 +1,7 @@
 package com.hepl.NEAT;
 
+import java.util.Random;
+
 public class Connection implements Comparable<Connection> {
     public enum State {
         ENABLED,DISABLED
@@ -15,6 +17,8 @@ public class Connection implements Comparable<Connection> {
     private float weight;
     // The innovation number
     private int innovation;
+    //Create a seed for random number generatuin
+    private static Random rand = new Random();
 
     public Connection(Node Input, Node Output,float weight) {
         this.inputNode = Input;
@@ -82,5 +86,9 @@ public class Connection implements Comparable<Connection> {
             return true;
         }
         return inputNode.id < outputNode.id;
+    }
+    public static float randomWeight()
+    {
+        return rand.nextFloat();
     }
 }

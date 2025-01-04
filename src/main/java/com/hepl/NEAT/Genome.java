@@ -26,20 +26,20 @@ public class Genome {
         nodes.add(i,n);
         synchronizeNodeIds();
     }
-    
+
     // synchronize node ids with their index
     public void synchronizeNodeIds() {
     	for (int i = 0; i < nodes.size(); i++) {
     		nodes.get(i).id = i;
     	}
     }
-    
+
     //Manually add a connection
     public void addConnection(Connection c){
         connections.add(c);
     }
     //Automatic connection creation
-    public void addConnection(com.hepl.NEAT.Node Input, com.hepl.NEAT.Node Output, Integer weight){
+    public void addConnection(com.hepl.NEAT.Node Input, com.hepl.NEAT.Node Output, Float weight){
         Connection c =new Connection(Input,Output,weight);
         connections.add(c);
         Input.addOutgoingConnection(c);
@@ -78,14 +78,14 @@ public class Genome {
             addNode(node_id,n);
             //Add all input as incoming connections
             for(int j = 0; j < AppConfig.NEAT_INPUT_SIZE; j++){
-                Connection c = new Connection(getNode(j),n,rand.nextInt());
+                Connection c = new Connection(getNode(j),n,Connection.randomWeight());
                 addConnection(c);
                 n.addIncomingConnection(c);
                 getNode(j).addOutgoingConnection(c);
             }
             //Add all output as outgoing connections
             for(int j = AppConfig.NEAT_INPUT_SIZE; j < AppConfig.NEAT_INPUT_SIZE+AppConfig.NEAT_OUTPUT_SIZE; j++){
-                Connection c = new Connection(n,getNode(j),rand.nextInt());
+                Connection c = new Connection(n,getNode(j),Connection.randomWeight());
                 addConnection(c);
                 n.addOutgoingConnection(c);
                 getNode(j).addIncomingConnection(c);
@@ -156,9 +156,9 @@ public class Genome {
         //Select a random connection
         //TODO: Adjust the randomness of that selection
 
-    	Connection c = new Connection(nodes.get(rand.nextInt(nodes.size())),nodes.get(rand.nextInt(nodes.size())),rand.nextInt());
+    	Connection c = new Connection(nodes.get(rand.nextInt(nodes.size())),nodes.get(rand.nextInt(nodes.size())),Connection.randomWeight());
 
-//    	connections.add(new Connection(nodes.get(rand.nextInt(nodes.size())),nodes.get(rand.nextInt(nodes.size())),rand.nextInt()));
+//    	connections.add(new Connection(nodes.get(rand.nextInt(nodes.size())),nodes.get(rand.nextInt(nodes.size())),Connection.randomWeight()));
         connections.add(c);
     }
     public void mutRemoveConnection(){
@@ -185,8 +185,8 @@ public class Genome {
         Node n = new Node(Node.Type.HIDDEN);
         //Create two new connections
 
-        Connection c1 = new Connection(c.getInputNode(),n,rand.nextInt());
-        Connection c2 = new Connection(n,c.getOutputNode(),rand.nextInt());
+        Connection c1 = new Connection(c.getInputNode(),n,Connection.randomWeight());
+        Connection c2 = new Connection(n,c.getOutputNode(),Connection.randomWeight());
 
 
         //Add the new node and connections
