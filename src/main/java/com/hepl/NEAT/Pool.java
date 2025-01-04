@@ -305,4 +305,6 @@ public class Pool {
     		}
     	}
     }
+
+	public List<Species> getSpecies(){return listOfSpecies;}
 }

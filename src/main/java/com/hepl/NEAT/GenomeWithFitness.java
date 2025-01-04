@@ -20,4 +20,8 @@ public class GenomeWithFitness { // doesn't modify the genome class -> based on 
 	public Genome getGenome() {
 		return genome;
 	}
+	public GenomeWithFitness clone()
+	{
+		return new GenomeWithFitness(genome.clone(), fitness);
+	}
 }
