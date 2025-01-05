@@ -178,6 +178,8 @@ public class Genome {
             mutAddConnection();
         }else if(r < AppConfig.NEAT_WEIGHT_MUTATION_RATE + AppConfig.NEAT_CONNECTION_MUTATION_RATE + AppConfig.NEAT_NODE_MUTATION_RATE){
             mutAddNode();
+        }else if(r < AppConfig.NEAT_WEIGHT_MUTATION_RATE + AppConfig.NEAT_CONNECTION_MUTATION_RATE + AppConfig.NEAT_NODE_MUTATION_RATE + AppConfig.NEAT_CONNECTION_MUTATION_RATE){
+            mutChangeConnectionState();
         }
     }
     //Connection mutation
@@ -244,7 +246,7 @@ public class Genome {
 
             // Write nodes
             for (Node node : nodes) {
-                String label = String.format("ID: %d", node.id);
+                String label = String.format("ID: %d\nV: %f", node.id, node.getValue());
                 writer.write(String.format("\t%d [label=\"%s\", shape=%s];\n", 
                     nodes.indexOf(node),
                     label,
