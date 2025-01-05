@@ -8,7 +8,14 @@ import java.util.Random;
 public class Pool {
 	private List<Species> listOfSpecies = new ArrayList<Species>();	
 //    ArrayList<Genome> genomes = new ArrayList<Genome>();
-
+	public Pool(int size)
+	{
+		listOfSpecies.add(new Species(new GenomeWithFitness(new Genome(), -1)));
+		for (int i = 0; i < size-1; i++) 
+		{
+			listOfSpecies.get(0).addGenome(new GenomeWithFitness(new Genome(), -1));	
+		}
+	}
     /*
      * TOOLS
      */

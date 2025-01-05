@@ -11,6 +11,10 @@ import com.hepl.NEAT.Species;
 public class NeatPoolAdapter implements IPopulation
 {
     private Pool pop;
+    public NeatPoolAdapter(int size)
+    {
+        pop = new Pool(size);
+    }
 
     @Override
     public Iindividual getIndividual(int index) 
