@@ -77,7 +77,7 @@ public class NeatPoolAdapter implements IPopulation
             throw new Exception("This NEAT population received incorrect individuals");
         }
         NeatGenomeAdapter indiv = (NeatGenomeAdapter)Iindiv;
-        throw new UnsupportedOperationException("Pool hasn't any definition for group mutation please implement before continueing");
+        indiv.g.getGenome().mutate();
 
     }
 

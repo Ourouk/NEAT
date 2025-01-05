@@ -3,6 +3,7 @@ package com.hepl.NEAT;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class Pool {
 	private List<Species> listOfSpecies = new ArrayList<Species>();	
@@ -307,4 +308,19 @@ public class Pool {
     }
 
 	public List<Species> getSpecies(){return listOfSpecies;}
+
+	public void mutate()
+	{
+		Random r = new Random();
+		for (Species species : listOfSpecies) 
+		{
+			for (GenomeWithFitness genomeWithFitness : species.getGenomes())
+			{
+				if(r.nextDouble() < AppConfig.NEAT_MUTATION_RATE)
+				{
+					genomeWithFitness.getGenome().mutate();
+				}
+			}	
+		}
+	}
 }
