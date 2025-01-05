@@ -65,7 +65,7 @@ public class App {
                     Game g2 = new Game(m2, s2, e2);
                     GameFitness gfit2 = new GameFitness(g2);
                     SimpleGeneticAlgorithm sg3 = new SimpleGeneticAlgorithm(gfit2);
-                    NeatPoolAdapter pop5 = new NeatPoolAdapter(150,false);
+                    NeatPoolAdapter pop5 = new NeatPoolAdapter(10,false);
                     sg3.runAlgorithm(pop5);
                     break;
 

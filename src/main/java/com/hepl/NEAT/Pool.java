@@ -345,4 +345,8 @@ public class Pool {
 
 	public List<Species> getSpecies(){return listOfSpecies;}
 
+	public void addGenomeToSpecies(Species species, GenomeWithFitness genome) {
+    	species.addGenome(genome);
+	}
+
 }
