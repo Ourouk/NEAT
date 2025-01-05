@@ -1,5 +1,8 @@
 package com.hepl.SourceProject;
 
+import com.hepl.NEAT.AppConfig;
+import com.hepl.NEAT.GenomeWithFitness;
+
 public class GameFitness implements IFitness {
 
     private Game solution;
@@ -23,8 +26,19 @@ public class GameFitness implements IFitness {
         return 999;
     }
     @Override
-    public int getFitness(NeatGenomeAdapter individual) {
-        
+    public int getFitness(GenomeWithFitness individual) {
+        int MinVal = Integer.MAX_VALUE;
+        for (int i = 0; i < AppConfig.NEAT_MAX_GAME_STEPS; i++) 
+        {
+            solution.Move(individual.getGenome().getOutputs(solution.getSurounding()));
+            if(MinVal > solution.getPlayerValue())
+            {
+                MinVal = solution.getPlayerValue();
+            }  
+        }
+        solution.Reset();
+        int fitness = Math.round(1000f/(MinVal));
+
+		return Math.max(fitness,1);
     }
-    
 }

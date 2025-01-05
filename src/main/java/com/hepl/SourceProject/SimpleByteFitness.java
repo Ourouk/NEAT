@@ -1,5 +1,7 @@
 package com.hepl.SourceProject;
 
+import com.hepl.NEAT.GenomeWithFitness;
+
 public class SimpleByteFitness implements IFitness {
 
     private byte[] solution; //Solution may be dynamic in it's size (https://ai.stackexchange.com/questions/8751/how-to-use-genetic-algorithm-for-varying-lengths-of-solutions#:~:text=A%20GP%20replaces%20the%20fixed%20length%20vector%20structure)
@@ -46,7 +48,7 @@ public class SimpleByteFitness implements IFitness {
 	}
 
 	@Override
-	public int getFitness(NeatGenomeAdapter individual) {
+	public int getFitness(GenomeWithFitness individual) {
 		float fitness = 0;
 		for (int i = 0; i < solution.length; i++) 
 		{
@@ -56,7 +58,7 @@ public class SimpleByteFitness implements IFitness {
 			{
 				in[j] = (float)Integer.parseInt(String.valueOf(strInput.charAt(j)));
 			}
-			fitness += 1/((Math.abs(solution[i] - individual.g.getGenome().getOutputs(in)[0]))+1);
+			fitness += 1/((Math.abs(solution[i] - individual.getGenome().getOutputs(in)[0]))+1);
 		}
 		//Set the max fitness to solution.length+128
 		fitness *= (solution.length+128.0)/(solution.length);

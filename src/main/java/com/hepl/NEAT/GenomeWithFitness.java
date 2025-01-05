@@ -1,5 +1,8 @@
 package com.hepl.NEAT;
 
+import com.hepl.SourceProject.SimpleByteFitness;
+import com.hepl.SourceProject.SimpleGeneticAlgorithm;
+
 public class GenomeWithFitness { // doesn't modify the genome class -> based on hydrozoa YT videos
 	private float fitness;
 	private Genome genome;
@@ -10,6 +13,7 @@ public class GenomeWithFitness { // doesn't modify the genome class -> based on 
 	}
 	
 	public float getFitness() {
+		fitness = SimpleGeneticAlgorithm.FitnessManager.getFitness(this);
 		return fitness;
 	}
 

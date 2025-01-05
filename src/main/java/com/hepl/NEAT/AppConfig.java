@@ -25,6 +25,9 @@ public class AppConfig {
         public static Double NEAT_CONNECTION_MUTATION_RATE = 0.05;
         public static Double NEAT_NODE_MUTATION_RATE = 0.03;
 
+        //Game Scoreing
+        public static Integer NEAT_MAX_GAME_STEPS = 25;
+
         public  void loadconfig() {
             try{
             // Load the properties file
@@ -47,6 +50,8 @@ public class AppConfig {
             NEAT_NODE_MUTATION_RATE = Double.parseDouble(properties.getProperty("neat.node.mutation.rate"));
             NEAT_CROSSOVER_RATE = Double.parseDouble(properties.getProperty("neat.crossover.rate"));
             NEAT_MUTATION_RATE = Double.parseDouble(properties.getProperty("neat.mutation.rate"));
+
+            NEAT_MAX_GAME_STEPS = Integer.parseInt(properties.getProperty("neat.game.maxstep"));
 
         } catch (IOException e) {
             System.out.println("Error reading properties file: " + e.getMessage());
