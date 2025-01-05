@@ -84,7 +84,7 @@ public class NeatPoolAdapter implements IPopulation
     @Override
     public void mutate(Iindividual Iindiv) throws Exception  
     {
-        if(!(Iindiv instanceof Individual))
+        if(!(Iindiv instanceof NeatGenomeAdapter))
         {
             throw new Exception("This NEAT population received incorrect individuals");
         }
@@ -101,7 +101,7 @@ public class NeatPoolAdapter implements IPopulation
     @Override
     public void add(Iindividual ind) throws Exception 
     {
-        if(!(ind instanceof Individual))
+        if(!(ind instanceof NeatGenomeAdapter))
         {
             throw new Exception("This NEAT population received incorrect individuals");
         }

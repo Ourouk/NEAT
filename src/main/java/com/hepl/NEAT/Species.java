@@ -22,6 +22,10 @@ public class Species {
 		this.genomes.add(representativeGenome);
 		this.stagnationCounter = 0;
 	}
+	public Species()
+	{
+		this.stagnationCounter = 0;
+	}
 	
 	/*
 	 * GETTERS
@@ -53,6 +57,11 @@ public class Species {
 	 * METHODS
 	 */
 	public void addGenome(GenomeWithFitness g) {
+		if(genomes.isEmpty())
+		{
+			this.representativeGenome = g;
+			this.stagnationCounter = 0;	
+		}
 		genomes.add(g);
 	}
 	
