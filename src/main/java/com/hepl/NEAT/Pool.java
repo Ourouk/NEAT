@@ -252,7 +252,7 @@ public class Pool {
             newCon.setWeight((con1.getWeight() + con2.getWeight()) / 2);
             
             // randomly change the state
-            //newCon.setConnectionState(Math.random() > 0.5 ? con1.getConnectionState() : con2.getConnectionState());
+            newCon.setConnectionState(Math.random() > 0.5 ? con1.getConnectionState() : con2.getConnectionState());
             child.addConnection(newCon);
         }
 
