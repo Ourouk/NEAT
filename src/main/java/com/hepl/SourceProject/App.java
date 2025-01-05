@@ -1,5 +1,6 @@
 package com.hepl.SourceProject;
 import java.util.Scanner;
+import com.hepl.NEAT.*;
 import com.hepl.SourceProject.Game;
 import com.hepl.SourceProject.GameFitness;
 import com.hepl.SourceProject.SimpleByteFitness;
@@ -53,6 +54,9 @@ public class App {
                     sg.runAlgorithm(pop3);
                     break;
                 case 4:
+                    AppConfig.NEAT_INPUT_SIZE = 2;
+                    AppConfig.NEAT_HIDDEN_SIZE = 0;
+                    AppConfig.NEAT_OUTPUT_SIZE = 1;
                     SimpleByteFitness fitXOR2 = new SimpleByteFitness("0110");
                     NeatPoolAdapter pop4 = new NeatPoolAdapter(2,false);
                     SimpleGeneticAlgorithm sg2 = new SimpleGeneticAlgorithm(fitXOR2);

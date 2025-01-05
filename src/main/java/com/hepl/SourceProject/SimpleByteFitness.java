@@ -56,6 +56,7 @@ public class SimpleByteFitness implements IFitness {
 		{
 			
 			fitness += 1/((Math.abs(solution[i] - individual.getGenome().getOutputs(in[i])[0]))+1);
+			//individual.getGenome().exportToDot("Images/Image("+SimpleGeneticAlgorithm.generationCount+"_"+i+").dot");
 		}
 		//Set the max fitness to solution.length+128
 		fitness *= (solution.length+128.0)/(solution.length);
