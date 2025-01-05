@@ -51,18 +51,15 @@ public class SimpleByteFitness implements IFitness {
 	@Override
 	public int getFitness(GenomeWithFitness individual) {
 		float fitness = 0;
+		float[][] in = {{0f,0f},{0f,1f},{1f,0f},{1f,1f}};
 		for (int i = 0; i < solution.length; i++) 
 		{
-			String strInput =Integer.toBinaryString(i);
-			float[] in = new float[AppConfig.NEAT_INPUT_SIZE];
-			for (int j = 0; j < strInput.length();j++) 
-			{
-				in[j] = (float)Integer.parseInt(String.valueOf(strInput.charAt(j)));
-			}
-			fitness += 1/((Math.abs(solution[i] - individual.getGenome().getOutputs(in)[0]))+1);
+			
+			fitness += 1/((Math.abs(solution[i] - individual.getGenome().getOutputs(in[i])[0]))+1);
 		}
 		//Set the max fitness to solution.length+128
 		fitness *= (solution.length+128.0)/(solution.length);
+		
 		return (int )fitness;
 	}
 }
