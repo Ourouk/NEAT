@@ -15,6 +15,7 @@ public class App {
             System.out.println("|2. XOR guess                    |");
             System.out.println("|3. Game guess                   |");
             System.out.println("|4. XOR NEAT                     |");
+            System.out.println("|5. Game NEAT                    |");
             System.out.println("|0. Exit                         |");
             System.out.println("----------------------------------");
             int choice = 0;
@@ -57,6 +58,17 @@ public class App {
                     SimpleGeneticAlgorithm sg2 = new SimpleGeneticAlgorithm(fitXOR2);
                     sg2.runAlgorithm(pop4);
                     break;
+                case 5:
+                    boolean[][] m2 = {{false,true,false,true},{false,true,false,true},{true,true,false,true},{true,true,true,true},{true,true,true,true}};
+                    int[] s2 = {2,1} ;
+                    int[] e2 = {0,3};
+                    Game g2 = new Game(m2, s2, e2);
+                    GameFitness gfit2 = new GameFitness(g2);
+                    SimpleGeneticAlgorithm sg3 = new SimpleGeneticAlgorithm(gfit2);
+                    NeatPoolAdapter pop5 = new NeatPoolAdapter(1,false);
+                    sg3.runAlgorithm(pop5);
+                    break;
+
                 case 0 :
                 default:
                     	System.exit(0);

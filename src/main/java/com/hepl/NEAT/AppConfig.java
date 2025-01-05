@@ -12,7 +12,7 @@ public class AppConfig {
         public static Integer NEAT_MAX_GENERATION = 100;
         //Initial Neural Network parameters
         public static Integer NEAT_INPUT_SIZE = 4;
-        public static Integer NEAT_OUTPUT_SIZE = 2;
+        public static Integer NEAT_OUTPUT_SIZE = 3;// For Neat to be able to play the game it needs 3 or more outputs
         public static Integer NEAT_HIDDEN_SIZE = 4;
         public static Boolean NEAT_BIAS = true;
         public static Integer NEAT_INIT_WEIGHT = 1;
