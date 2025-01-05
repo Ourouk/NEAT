@@ -1,6 +1,7 @@
 package com.hepl.NEAT;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -15,11 +16,11 @@ public class AppConfig {
         public static Integer NEAT_OUTPUT_SIZE = 2;
         public static Integer NEAT_HIDDEN_SIZE = 4;
         public static Boolean NEAT_BIAS = true;
-        public static Integer NEAT_INIT_WEIGHT = 1;
+        public static Float NEAT_INIT_WEIGHT = 1.0f;
         public static Boolean NEAT_INIT_WEIGHT_RANDOM = true;
         //Random Connection Weight parameters
-        public static float NEAT_RANDOM_WEIGHT_MIN = -1.0f;
-        public static float NEAT_RANDOM_WEIGHT_MAX = 1.0f;
+        public static Float NEAT_RANDOM_WEIGHT_MIN = -1.0f;
+        public static Float NEAT_RANDOM_WEIGHT_MAX = 1.0f;
         //Crossover rates
         public static Double NEAT_CROSSOVER_RATE = 0.75;
         //Mutation rates
@@ -27,7 +28,32 @@ public class AppConfig {
         public static Double NEAT_WEIGHT_MUTATION_RATE = 0.8;
         public static Double NEAT_CONNECTION_MUTATION_RATE = 0.05;
         public static Double NEAT_NODE_MUTATION_RATE = 0.03;
+        public void createconfigFile(String filename) {
+            try{
+                FileOutputStream fos = new FileOutputStream(filename);
+                properties.setProperty("neat.population.size", NEAT_POPULATION_SIZE.toString());
+                properties.setProperty("neat.max.generation", NEAT_MAX_GENERATION.toString());
 
+                properties.setProperty("neat.input.size", NEAT_INPUT_SIZE.toString());
+                properties.setProperty("neat.output.size", NEAT_OUTPUT_SIZE.toString());
+                properties.setProperty("neat.hidden.size", NEAT_HIDDEN_SIZE.toString());
+                properties.setProperty("neat.bias", NEAT_BIAS.toString());
+                properties.setProperty("neat.init.weight", NEAT_INIT_WEIGHT.toString());
+                properties.setProperty("neat.init.weight.random", NEAT_INIT_WEIGHT_RANDOM.toString());
+                properties.setProperty("neat.random.weight.min", NEAT_RANDOM_WEIGHT_MIN.toString());
+                properties.setProperty("neat.random.weight.max", NEAT_RANDOM_WEIGHT_MAX.toString());
+
+                properties.setProperty("neat.crossover.rate", NEAT_CROSSOVER_RATE.toString());
+                properties.setProperty("neat.mutation.rate", NEAT_MUTATION_RATE.toString());
+                properties.setProperty("neat.weight.mutation.rate", NEAT_WEIGHT_MUTATION_RATE.toString());
+                properties.setProperty("neat.connection.mutation.rate", NEAT_CONNECTION_MUTATION_RATE.toString());
+                properties.setProperty("neat.node.mutation.rate", NEAT_NODE_MUTATION_RATE.toString());
+                properties.store(fos, "NEAT configuration");
+
+            } catch (IOException e) {
+                System.out.println("Error creating properties file: " + e.getMessage());
+            }
+        }
         public  void loadconfig() {
             try{
             // Load the properties file
@@ -41,6 +67,11 @@ public class AppConfig {
             NEAT_OUTPUT_SIZE = Integer.parseInt(properties.getProperty("neat.output.size"));
             NEAT_HIDDEN_SIZE = Integer.parseInt(properties.getProperty("neat.hidden.size"));
             NEAT_BIAS = Boolean.parseBoolean(properties.getProperty("neat.bias"));
+            NEAT_INIT_WEIGHT = Float.parseFloat(properties.getProperty("neat.init.weight"));
+            NEAT_INIT_WEIGHT_RANDOM = Boolean.parseBoolean(properties.getProperty("neat.init.weight.random"));
+
+            NEAT_RANDOM_WEIGHT_MIN = Float.parseFloat(properties.getProperty("neat.random.weight.min"));
+            NEAT_RANDOM_WEIGHT_MAX = Float.parseFloat(properties.getProperty("neat.random.weight.max"));
 
             NEAT_CROSSOVER_RATE = Double.parseDouble(properties.getProperty("neat.crossover.rate"));
 
