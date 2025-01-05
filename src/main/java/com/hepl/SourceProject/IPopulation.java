@@ -10,6 +10,8 @@ public interface IPopulation {
     List<Iindividual> getIndividuals(); 
 
     Iindividual getFittest();
+    void add(Iindividual ind) throws Exception;
+    IPopulation cloneEmpty();
 
     Iindividual crossover(Iindividual indiv1, Iindividual indiv2) throws Exception;
 

@@ -14,6 +14,8 @@ public class App {
             System.out.println("|1. Simple byte guess            |");
             System.out.println("|2. XOR guess                    |");
             System.out.println("|3. Game guess                   |");
+            System.out.println("|4. XOR NEAT                     |");
+            System.out.println("|5. Game NEAT                    |");
             System.out.println("|0. Exit                         |");
             System.out.println("----------------------------------");
             int choice = 0;
@@ -45,25 +47,28 @@ public class App {
                     int[] e = {0,3};
                     Game g = new Game(m, s, e);
                     g.display(true);
-                   
-                    // String newSolution = "110111001001001";
-                    // byte[] solution = new byte[newSolution.length()];
-
-                    // for (int i = 0; i < newSolution.length(); i++) {
-                    //     String character = newSolution.substring(i, i + 1);
-                    //     if (character.equals("0") || character.equals("1")) {
-                    //         solution[i] = Byte.parseByte(character);
-                    //     } else {
-                    //         solution[i] = 0;
-                    //     }
-                    // }
-                    // g.PlayStatic(solution);
-
                     GameFitness gfit = new GameFitness(g);
                     SimpleGeneticAlgorithm sg = new SimpleGeneticAlgorithm(gfit);
                     Population pop3 = new Population(3, true);
                     sg.runAlgorithm(pop3);
                     break;
+                case 4:
+                    SimpleByteFitness fitXOR2 = new SimpleByteFitness("0110");
+                    NeatPoolAdapter pop4 = new NeatPoolAdapter(2,false);
+                    SimpleGeneticAlgorithm sg2 = new SimpleGeneticAlgorithm(fitXOR2);
+                    sg2.runAlgorithm(pop4);
+                    break;
+                case 5:
+                    boolean[][] m2 = {{false,true,false,true},{false,true,false,true},{true,true,false,true},{true,true,true,true},{true,true,true,true}};
+                    int[] s2 = {2,1} ;
+                    int[] e2 = {0,3};
+                    Game g2 = new Game(m2, s2, e2);
+                    GameFitness gfit2 = new GameFitness(g2);
+                    SimpleGeneticAlgorithm sg3 = new SimpleGeneticAlgorithm(gfit2);
+                    NeatPoolAdapter pop5 = new NeatPoolAdapter(150,false);
+                    sg3.runAlgorithm(pop5);
+                    break;
+
                 case 0 :
                 default:
                     	System.exit(0);

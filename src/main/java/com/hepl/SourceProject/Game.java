@@ -225,9 +225,9 @@ public class Game
     {
         PlayerPos = StartPos.clone();
     }
-    public int[] getSurounding()
+    public float[] getSurounding()
     {
-        int[] ret = new int[9];
+        float[] ret = new float[9];
         ret[0] = GetMap(PlayerPos[0]-1, PlayerPos[1]-1)? 0 : 1;
         ret[1] = GetMap(PlayerPos[0], PlayerPos[1]-1)? 0 : 1;
         ret[2] = GetMap(PlayerPos[0]+1, PlayerPos[1]-1)? 0 : 1;

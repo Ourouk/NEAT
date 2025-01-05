@@ -38,7 +38,7 @@ public class SimpleGeneticAlgorithm {
 
         int generationCount = 1;
         while (myPop.getFittest().getFitness() < FitnessManager.getMaxFitness()) { //problème de taille
-            System.out.println("Generation: " + generationCount + " Best fitness found: " + myPop.getFittest().getFitness());
+            System.out.println("Generation: " + generationCount + " Best fitness found: " + myPop.getFittest().getFitness() + "Ind Count :  "+ myPop.getIndividuals().size());
             myPop = evolvePopulation(myPop);
             generationCount++;
             if(generationCount>=overshootIteration){
@@ -56,7 +56,7 @@ public class SimpleGeneticAlgorithm {
 
     public IPopulation evolvePopulation(IPopulation pop) throws Exception {
         int elitismOffset;
-        Population newPopulation = new Population(pop.getIndividuals().size(), false);
+        IPopulation newPopulation = pop.cloneEmpty();
 		
 		//cross-over rate = how many individuals of the previous population I will keep for the next
 		double previousPopulationSize = pop.getIndividuals().size();
@@ -65,7 +65,7 @@ public class SimpleGeneticAlgorithm {
         
         if (elitism) {
             //newPopulation.getIndividuals().add(0, pop.getFittest());
-            newPopulation.getIndividuals().add(0, pop.getFittest().clone()); // Utilisation du clonage pour éviter la référence partagée (Mr. Hiard)
+            newPopulation.add( pop.getFittest().clone()); // Utilisation du clonage pour éviter la référence partagée (Mr. Hiard)
             elitismOffset = 1;
         } else {
             elitismOffset = 0;
@@ -78,11 +78,11 @@ public class SimpleGeneticAlgorithm {
 					Iindividual indiv1 = tournamentSelection(pop);
 					Iindividual indiv2 = tournamentSelection(pop);
 					Iindividual newIndiv = pop.crossover(indiv1, indiv2);
-					newPopulation.getIndividuals().add(i, newIndiv);
+					newPopulation.add(newIndiv);
 				}
 				
 				for (int i = elitismOffset + (int)crossoveredPopulation; i < previousPopulationSize; i++) //After add the % of previous population
-					newPopulation.getIndividuals().add(i, pop.getIndividual(i).clone()); // -> Problème résolu par Mr. Hiard (surtout pour WHEEL)
+					newPopulation.add(pop.getIndividual(i).clone()); // -> Problème résolu par Mr. Hiard (surtout pour WHEEL)
 					//newPopulation.getIndividuals().add(i, pop.getIndividual(i)); // C'est naze -> en fait il ne copie rien mais fait une référence
 
 			break;
@@ -97,11 +97,11 @@ public class SimpleGeneticAlgorithm {
 					}
 					
 					Iindividual newIndiv = pop.crossover(indiv1, indiv2);
-					newPopulation.getIndividuals().add(i, newIndiv);
+					newPopulation.add( newIndiv);
 				}
 				
 				for (int i = elitismOffset + (int)crossoveredPopulation; i < previousPopulationSize; i++) //After add the % of previous population
-					newPopulation.getIndividuals().add(i, pop.getIndividual(i).clone()); // Résolution par Mr. Hiard
+					newPopulation.add( pop.getIndividual(i).clone()); // Résolution par Mr. Hiard
 					//newPopulation.getIndividuals().add(i, pop.getIndividual(i)); // C'est naze -> en fait il ne copie rien mais fait une référence
 				
 			break;
@@ -117,12 +117,17 @@ public class SimpleGeneticAlgorithm {
 
 
     private Iindividual tournamentSelection(IPopulation pop) {
-        Population tournament = new Population(tournamentSize, false);
+        Iindividual fittest = new Individual();
+		int fitness = -1;
         for (int i = 0; i < tournamentSize; i++) {
             int randomId = (int) (Math.random() * pop.getIndividuals().size());
-            tournament.getIndividuals().add(i, pop.getIndividual(randomId));
+            if(fitness < pop.getIndividual(randomId).getFitness())
+			{
+				fittest = pop.getIndividual(randomId);
+				fitness = pop.getIndividual(randomId).getFitness();
+			}
         }
-        Iindividual fittest = tournament.getFittest();
+
         return fittest;
     }
 

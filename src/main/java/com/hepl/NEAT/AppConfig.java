@@ -13,7 +13,7 @@ public class AppConfig {
         public static Integer NEAT_MAX_GENERATION = 100;
         //Initial Neural Network parameters
         public static Integer NEAT_INPUT_SIZE = 4;
-        public static Integer NEAT_OUTPUT_SIZE = 2;
+        public static Integer NEAT_OUTPUT_SIZE = 3;// For Neat to be able to play the game it needs 3 or more outputs
         public static Integer NEAT_HIDDEN_SIZE = 4;
         public static Boolean NEAT_BIAS = true;
         public static Float NEAT_INIT_WEIGHT = 1.0f;
@@ -38,6 +38,8 @@ public class AppConfig {
         // Evolution constants
         public static Integer NEAT_MAX_STAGNATION = 15;
         public static Float NEAT_PERCENTAGE_TO_KEEP = 0.5f;
+  
+        public static Integer NEAT_MAX_GAME_STEPS = 25;
         
         public void createconfigFile(String filename) {
             try{
@@ -113,6 +115,8 @@ public class AppConfig {
             // evolution
             NEAT_MAX_STAGNATION = Integer.parseInt(properties.getProperty("neat.max.stagnation"));
             NEAT_PERCENTAGE_TO_KEEP = Float.parseFloat(properties.getProperty("neat.percentage.to.keep"));
+
+            NEAT_MAX_GAME_STEPS = Integer.parseInt(properties.getProperty("neat.game.maxstep"));
 
         } catch (IOException e) {
             System.out.println("Error reading properties file: " + e.getMessage());

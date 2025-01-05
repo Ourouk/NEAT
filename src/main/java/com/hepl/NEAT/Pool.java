@@ -3,11 +3,23 @@ package com.hepl.NEAT;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class Pool {
 	private List<Species> listOfSpecies = new ArrayList<Species>();	
 //    ArrayList<Genome> genomes = new ArrayList<Genome>();
-
+	public Pool()
+	{
+		listOfSpecies.add(new Species());	
+	}
+	public Pool(int size)
+	{
+		listOfSpecies.add(new Species(new GenomeWithFitness(new Genome(false), -1)));
+		for (int i = 0; i < size-1; i++) 
+		{
+			listOfSpecies.get(0).addGenome(new GenomeWithFitness(new Genome(false), -1));	
+		}
+	}
     /*
      * TOOLS
      */
@@ -216,7 +228,7 @@ public class Pool {
      * CROSSOVER
      */
     public Genome GenomeCrossover(Genome p1, Genome p2, float fitnessP1, float fitnessP2) {
-        Genome child = new Genome();
+        Genome child = new Genome(true);
         
         // synchronize of the ids of the parent nodes
 //        p1.synchronizeNodeIds();
@@ -332,4 +344,5 @@ public class Pool {
     }
 
 	public List<Species> getSpecies(){return listOfSpecies;}
+
 }

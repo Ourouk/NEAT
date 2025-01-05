@@ -13,9 +13,9 @@ public class Genome {
 
     //Create a seed for random number generatuin
     private static Random rand = new Random();
-
-    public Genome() {
-
+    public Genome(){}
+    public Genome(boolean IsEmpty) {
+        if(!IsEmpty){initNetwork();}
     }
     //Interface to edit the treeMap
     public void addNode(Node n){
@@ -225,7 +225,8 @@ public class Genome {
     // copy the genome
     @Override
     public Genome clone() {
-    	Genome copy = new Genome();
+    	Genome copy = new Genome(true);
+    
     	// nodes
     	for (Node node : nodes) {
     		Node newNode = node.clone();
