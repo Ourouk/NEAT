@@ -53,7 +53,7 @@ public class App {
                     break;
                 case 4:
                     SimpleByteFitness fitXOR2 = new SimpleByteFitness("0110");
-                    NeatPoolAdapter pop4 = new NeatPoolAdapter(20,true);
+                    NeatPoolAdapter pop4 = new NeatPoolAdapter(20,false);
                     SimpleGeneticAlgorithm sg2 = new SimpleGeneticAlgorithm(fitXOR2);
                     sg2.runAlgorithm(pop4);
                     break;

@@ -15,7 +15,7 @@ public class Genome {
     private static Random rand = new Random();
 
     public Genome() {
-
+        initNetwork();
     }
     //Interface to edit the treeMap
     public void addNode(Node n){
