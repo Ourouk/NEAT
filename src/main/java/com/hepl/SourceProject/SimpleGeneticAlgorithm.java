@@ -38,7 +38,7 @@ public class SimpleGeneticAlgorithm {
 
         int generationCount = 1;
         while (myPop.getFittest().getFitness() < FitnessManager.getMaxFitness()) { //problème de taille
-            System.out.println("Generation: " + generationCount + " Best fitness found: " + myPop.getFittest().getFitness());
+            System.out.println("Generation: " + generationCount + " Best fitness found: " + myPop.getFittest().getFitness() + "Ind Count :  "+ myPop.getIndividuals().size());
             myPop = evolvePopulation(myPop);
             generationCount++;
             if(generationCount>=overshootIteration){
@@ -65,7 +65,7 @@ public class SimpleGeneticAlgorithm {
         
         if (elitism) {
             //newPopulation.getIndividuals().add(0, pop.getFittest());
-            newPopulation.getIndividuals().add(0, pop.getFittest().clone()); // Utilisation du clonage pour éviter la référence partagée (Mr. Hiard)
+            newPopulation.add( pop.getFittest().clone()); // Utilisation du clonage pour éviter la référence partagée (Mr. Hiard)
             elitismOffset = 1;
         } else {
             elitismOffset = 0;
