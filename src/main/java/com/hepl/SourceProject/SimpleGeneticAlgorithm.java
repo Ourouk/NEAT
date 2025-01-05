@@ -56,7 +56,7 @@ public class SimpleGeneticAlgorithm {
 
     public IPopulation evolvePopulation(IPopulation pop) throws Exception {
         int elitismOffset;
-        Population newPopulation = new Population(pop.getIndividuals().size(), false);
+        IPopulation newPopulation = pop.cloneEmpty();
 		
 		//cross-over rate = how many individuals of the previous population I will keep for the next
 		double previousPopulationSize = pop.getIndividuals().size();
@@ -78,11 +78,11 @@ public class SimpleGeneticAlgorithm {
 					Iindividual indiv1 = tournamentSelection(pop);
 					Iindividual indiv2 = tournamentSelection(pop);
 					Iindividual newIndiv = pop.crossover(indiv1, indiv2);
-					newPopulation.getIndividuals().add(i, newIndiv);
+					newPopulation.add(newIndiv);
 				}
 				
 				for (int i = elitismOffset + (int)crossoveredPopulation; i < previousPopulationSize; i++) //After add the % of previous population
-					newPopulation.getIndividuals().add(i, pop.getIndividual(i).clone()); // -> Problème résolu par Mr. Hiard (surtout pour WHEEL)
+					newPopulation.add(pop.getIndividual(i).clone()); // -> Problème résolu par Mr. Hiard (surtout pour WHEEL)
 					//newPopulation.getIndividuals().add(i, pop.getIndividual(i)); // C'est naze -> en fait il ne copie rien mais fait une référence
 
 			break;
@@ -97,11 +97,11 @@ public class SimpleGeneticAlgorithm {
 					}
 					
 					Iindividual newIndiv = pop.crossover(indiv1, indiv2);
-					newPopulation.getIndividuals().add(i, newIndiv);
+					newPopulation.add( newIndiv);
 				}
 				
 				for (int i = elitismOffset + (int)crossoveredPopulation; i < previousPopulationSize; i++) //After add the % of previous population
-					newPopulation.getIndividuals().add(i, pop.getIndividual(i).clone()); // Résolution par Mr. Hiard
+					newPopulation.add( pop.getIndividual(i).clone()); // Résolution par Mr. Hiard
 					//newPopulation.getIndividuals().add(i, pop.getIndividual(i)); // C'est naze -> en fait il ne copie rien mais fait une référence
 				
 			break;

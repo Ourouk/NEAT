@@ -121,5 +121,21 @@ public class Population implements IPopulation{
 			}
 		}
     }
+
+    @Override
+    public void add(Iindividual ind) throws Exception
+    {
+        if(!(ind instanceof Individual))
+        {
+            throw new Exception("This byte population received incorrect individuals");
+        }
+        Individual indiv = (Individual)ind;  
+        individuals.add(indiv);   
+    }
+
+    @Override
+    public IPopulation cloneEmpty() {
+        return new Population(0, false);
+    }
     
 }

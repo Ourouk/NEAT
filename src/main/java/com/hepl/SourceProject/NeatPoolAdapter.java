@@ -2,7 +2,9 @@ package com.hepl.SourceProject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+import com.hepl.NEAT.AppConfig;
 import com.hepl.NEAT.Genome;
 import com.hepl.NEAT.GenomeWithFitness;
 import com.hepl.NEAT.Pool;
@@ -11,10 +13,16 @@ import com.hepl.NEAT.Species;
 public class NeatPoolAdapter implements IPopulation
 {
     private Pool pop;
-    public NeatPoolAdapter(int size)
+    public NeatPoolAdapter(int size,boolean isEmpty)
     {
+        if(isEmpty)
+        {
+            pop = new Pool();
+            return;
+        }
         pop = new Pool(size);
     }
+
 
     @Override
     public Iindividual getIndividual(int index) 
@@ -81,8 +89,30 @@ public class NeatPoolAdapter implements IPopulation
             throw new Exception("This NEAT population received incorrect individuals");
         }
         NeatGenomeAdapter indiv = (NeatGenomeAdapter)Iindiv;
-        indiv.g.getGenome().mutate();
+        Random r = new Random();
+		
+        if(r.nextDouble() < AppConfig.NEAT_MUTATION_RATE)
+				{
+					indiv.g.getGenome().mutate();
+				}
 
+    }
+
+    @Override
+    public void add(Iindividual ind) throws Exception 
+    {
+        if(!(ind instanceof Individual))
+        {
+            throw new Exception("This NEAT population received incorrect individuals");
+        }
+        NeatGenomeAdapter indiv = (NeatGenomeAdapter)ind;  
+        pop.addGenomeToSpecies(pop.getSpecies().get(0), indiv.g);
+    }
+
+    @Override
+    public IPopulation cloneEmpty() 
+    {
+        return new NeatPoolAdapter(0, true);
     }
 
 

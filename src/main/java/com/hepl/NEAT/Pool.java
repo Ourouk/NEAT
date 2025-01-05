@@ -8,6 +8,7 @@ import java.util.Random;
 public class Pool {
 	private List<Species> listOfSpecies = new ArrayList<Species>();	
 //    ArrayList<Genome> genomes = new ArrayList<Genome>();
+	public Pool(){}
 	public Pool(int size)
 	{
 		listOfSpecies.add(new Species(new GenomeWithFitness(new Genome(), -1)));
@@ -316,18 +317,4 @@ public class Pool {
 
 	public List<Species> getSpecies(){return listOfSpecies;}
 
-	public void mutate()
-	{
-		Random r = new Random();
-		for (Species species : listOfSpecies) 
-		{
-			for (GenomeWithFitness genomeWithFitness : species.getGenomes())
-			{
-				if(r.nextDouble() < AppConfig.NEAT_MUTATION_RATE)
-				{
-					genomeWithFitness.getGenome().mutate();
-				}
-			}	
-		}
-	}
 }
