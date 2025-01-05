@@ -178,7 +178,7 @@ public class Genome {
             mutAddConnection();
         }else if(r < AppConfig.NEAT_WEIGHT_MUTATION_RATE + AppConfig.NEAT_CONNECTION_MUTATION_RATE + AppConfig.NEAT_NODE_MUTATION_RATE){
             mutAddNode();
-        }else if(r < AppConfig.NEAT_WEIGHT_MUTATION_RATE + AppConfig.NEAT_CONNECTION_MUTATION_RATE + AppConfig.NEAT_NODE_MUTATION_RATE + AppConfig.NEAT_CONNECTION_MUTATION_RATE){
+        }else if(r < AppConfig.NEAT_WEIGHT_MUTATION_RATE + AppConfig.NEAT_CONNECTION_MUTATION_RATE + AppConfig.NEAT_NODE_MUTATION_RATE + AppConfig.NEAT_FLIP_CONNECTION_MUTATION_RATE){
             mutChangeConnectionState();
         }
     }

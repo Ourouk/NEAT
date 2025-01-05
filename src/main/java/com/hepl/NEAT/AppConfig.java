@@ -14,7 +14,7 @@ public class AppConfig {
         //Initial Neural Network parameters
         public static Integer NEAT_INPUT_SIZE = 4;
         public static Integer NEAT_OUTPUT_SIZE = 3;// For Neat to be able to play the game it needs 3 or more outputs
-        public static Integer NEAT_HIDDEN_SIZE = 4;
+        public static Integer NEAT_HIDDEN_SIZE = 0;
         public static Boolean NEAT_BIAS = true;
         public static Float NEAT_INIT_WEIGHT = 1.0f;
         public static Boolean NEAT_INIT_WEIGHT_RANDOM = true;
@@ -23,12 +23,14 @@ public class AppConfig {
         public static Float NEAT_RANDOM_WEIGHT_MAX = 1.0f;
         //Crossover rates
         public static Double NEAT_CROSSOVER_RATE = 0.75;
-        //Mutation rates
+        //General Mutation rates
         public static Double NEAT_MUTATION_RATE = 0.25;
-        public static Double NEAT_WEIGHT_MUTATION_RATE = 0.8;
+        //Mutation rates
+        public static Double NEAT_WEIGHT_MUTATION_RATE = 0.85;
         public static Double NEAT_CONNECTION_MUTATION_RATE = 0.05;
-        public static Double NEAT_NODE_MUTATION_RATE = 0.03;
-        
+        public static Double NEAT_FLIP_CONNECTION_MUTATION_RATE = 0.05;
+        public static Double NEAT_NODE_MUTATION_RATE = 0.05;
+
     	// Speciation constants
         public static Float NEAT_C1 = 1f;
         public static Float NEAT_C2 = 1f;
