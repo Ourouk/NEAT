@@ -50,47 +50,47 @@ public class TestSpeciation {
         
         Genome parent2 = new Genome();
         
-        parent2.addNode(node1);
-        parent2.addNode(node2);
-        parent2.addNode(node3);
-        parent2.addNode(node4);
-        parent2.addNode(node5);
-        parent2.addNode(node6);
+        parent2.addNode(node1.clone());
+        parent2.addNode(node2.clone());
+        parent2.addNode(node3.clone());
+        parent2.addNode(node4.clone());
+        parent2.addNode(node5.clone());
+        parent2.addNode(node6.clone());
 
-        con2.setConnectionState(Connection.State.DISABLED);
-        con5.setConnectionState(Connection.State.DISABLED);
+        Connection newCon5 = con5.clone();
+        newCon5.setConnectionState(Connection.State.DISABLED);
         
-        parent2.addConnection(con1);
-        parent2.addConnection(con2);
-        parent2.addConnection(con3);
-        parent2.addConnection(con4);
-        parent2.addConnection(con5);
-        parent2.addConnection(con6);
-        parent2.addConnection(con7);
-        parent2.addConnection(con9);
-        parent2.addConnection(con10);
+        parent2.addConnection(con1.clone());
+        parent2.addConnection(con2.clone());
+        parent2.addConnection(con3.clone());
+        parent2.addConnection(con4.clone());
+        parent2.addConnection(newCon5);
+        parent2.addConnection(con6.clone());
+        parent2.addConnection(con7.clone());
+        parent2.addConnection(con9.clone());
+        parent2.addConnection(con10.clone());
         
         
         
         
         Genome offspring = new Genome();
-        offspring.addNode(node1);
-        offspring.addNode(node2);
-        offspring.addNode(node3);
-        offspring.addNode(node4);
-        offspring.addNode(node5);
-        offspring.addNode(node6);
+        offspring.addNode(node1.clone());
+        offspring.addNode(node2.clone());
+        offspring.addNode(node3.clone());
+        offspring.addNode(node4.clone());
+        offspring.addNode(node5.clone());
+        offspring.addNode(node6.clone());
 
-        offspring.addConnection(con1);
-        offspring.addConnection(con2);
-        offspring.addConnection(con3);
-        offspring.addConnection(con4);
-        offspring.addConnection(con5);
-        offspring.addConnection(con6);
-        offspring.addConnection(con7);
-        offspring.addConnection(con8);
-        offspring.addConnection(con9);
-        offspring.addConnection(con10);
+        offspring.addConnection(con1.clone());
+        offspring.addConnection(con2.clone());
+        offspring.addConnection(con3.clone());
+        offspring.addConnection(con4.clone());
+        offspring.addConnection(newCon5.clone());
+        offspring.addConnection(con6.clone());
+        offspring.addConnection(con7.clone());
+        offspring.addConnection(con8.clone());
+        offspring.addConnection(con9.clone());
+        offspring.addConnection(con10.clone());
 
         // Englobe genomes with fitness
         GenomeWithFitness gwf1 = new GenomeWithFitness(parent1, 1.0f);
