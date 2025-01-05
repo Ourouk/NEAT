@@ -23,5 +23,11 @@ public class NeatGenomeAdapter implements Iindividual
     public int getFitness() {
         return (int)g.getFitness();
     }
+    @Override
+    public String toString()
+    {
+        g.getGenome().exportToDot("GExported");
+        return "Has been printed in the GExported file";
+    }
         
 }

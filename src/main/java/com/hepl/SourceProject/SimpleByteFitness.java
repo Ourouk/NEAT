@@ -1,5 +1,6 @@
 package com.hepl.SourceProject;
 
+import com.hepl.NEAT.AppConfig;
 import com.hepl.NEAT.GenomeWithFitness;
 
 public class SimpleByteFitness implements IFitness {
@@ -53,7 +54,7 @@ public class SimpleByteFitness implements IFitness {
 		for (int i = 0; i < solution.length; i++) 
 		{
 			String strInput =Integer.toBinaryString(i);
-			float[] in = new float[strInput.length()];
+			float[] in = new float[AppConfig.NEAT_INPUT_SIZE];
 			for (int j = 0; j < strInput.length();j++) 
 			{
 				in[j] = (float)Integer.parseInt(String.valueOf(strInput.charAt(j)));

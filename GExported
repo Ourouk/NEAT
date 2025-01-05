@@ -1,0 +1,62 @@
+digraph Genome {
+	rankdir=BT;
+	0 [label="ID: 0", shape=ellipse];
+	1 [label="ID: 1", shape=ellipse];
+	2 [label="ID: 2", shape=ellipse];
+	3 [label="ID: 3", shape=ellipse];
+	4 [label="ID: 4", shape=ellipse];
+	5 [label="ID: 5", shape=doublecircle];
+	6 [label="ID: 6", shape=doublecircle];
+	7 [label="ID: 7", shape=circle];
+	8 [label="ID: 8", shape=circle];
+	9 [label="ID: 9", shape=circle];
+	10 [label="ID: 10", shape=circle];
+	0 -> 7 [label="Weight: -105873648.000000
+Innovation: 0", style=solid];
+	1 -> 7 [label="Weight: 1803394176.000000
+Innovation: 1", style=solid];
+	2 -> 7 [label="Weight: 501562112.000000
+Innovation: 2", style=solid];
+	3 -> 7 [label="Weight: 398398752.000000
+Innovation: 3", style=solid];
+	7 -> 4 [label="Weight: 2063543552.000000
+Innovation: 4", style=solid];
+	7 -> 5 [label="Weight: -1611246848.000000
+Innovation: 5", style=solid];
+	0 -> 8 [label="Weight: 1293429376.000000
+Innovation: 6", style=solid];
+	1 -> 8 [label="Weight: -1604533888.000000
+Innovation: 7", style=solid];
+	2 -> 8 [label="Weight: 2114913024.000000
+Innovation: 8", style=solid];
+	3 -> 8 [label="Weight: 366926368.000000
+Innovation: 9", style=solid];
+	8 -> 4 [label="Weight: 58298256.000000
+Innovation: 10", style=solid];
+	8 -> 5 [label="Weight: 491576416.000000
+Innovation: 11", style=solid];
+	0 -> 9 [label="Weight: 80667792.000000
+Innovation: 12", style=solid];
+	1 -> 9 [label="Weight: -1986385920.000000
+Innovation: 13", style=solid];
+	2 -> 9 [label="Weight: -1217848576.000000
+Innovation: 14", style=solid];
+	3 -> 9 [label="Weight: -1417753856.000000
+Innovation: 15", style=solid];
+	9 -> 4 [label="Weight: -1875242496.000000
+Innovation: 16", style=solid];
+	9 -> 5 [label="Weight: 1563268864.000000
+Innovation: 17", style=solid];
+	0 -> 10 [label="Weight: -184116512.000000
+Innovation: 18", style=solid];
+	1 -> 10 [label="Weight: -274533760.000000
+Innovation: 19", style=solid];
+	2 -> 10 [label="Weight: -1239538432.000000
+Innovation: 20", style=solid];
+	3 -> 10 [label="Weight: -1312238336.000000
+Innovation: 21", style=solid];
+	10 -> 4 [label="Weight: 1372292608.000000
+Innovation: 22", style=solid];
+	10 -> 5 [label="Weight: -1447634304.000000
+Innovation: 23", style=solid];
+}
