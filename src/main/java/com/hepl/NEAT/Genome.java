@@ -138,7 +138,7 @@ public class Genome {
         }
         //Evaluate hidden nodes
         //This code assume that the nodes are sorted by layer
-        for(int i = neat_input_size; i < nodes.size(); i++){
+        for(int i = neat_input_size+AppConfig.NEAT_OUTPUT_SIZE; i < nodes.size(); i++){
             Node n = getNode(i);
             float sum = 0;
             for(Connection c : n.incomingConnections){
