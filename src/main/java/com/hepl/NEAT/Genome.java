@@ -46,8 +46,11 @@ public class Genome {
                 return false;
             }
         }
-        //Create a connection
+        //Check if is valid
         Connection c =new Connection(Input,Output,weight);
+        if (!c.IsValid()){
+            return false;
+        }
         connections.add(c);
         Input.addOutgoingConnection(c);
         Output.addIncomingConnection(c);
@@ -226,7 +229,7 @@ public class Genome {
     @Override
     public Genome clone() {
     	Genome copy = new Genome(true);
-    
+
     	// nodes
     	for (Node node : nodes) {
     		Node newNode = node.clone();
@@ -248,17 +251,17 @@ public class Genome {
             // Write nodes
             for (Node node : nodes) {
                 String label = String.format("ID: %d\nV: %f", node.id, node.getValue());
-                writer.write(String.format("\t%d [label=\"%s\", shape=%s];\n", 
+                writer.write(String.format("\t%d [label=\"%s\", shape=%s];\n",
                     nodes.indexOf(node),
                     label,
-                    node.type == Node.Type.INPUT ? "ellipse" : 
+                    node.type == Node.Type.INPUT ? "ellipse" :
                     node.type == Node.Type.OUTPUT ? "doublecircle" : "circle"));
             }
 
             // Write connections
             for (Connection connection : connections) {
                 String label = String.format("Weight: %f\nInnovation: %d", connection.getWeight(), connection.getInnovation());
-                writer.write(String.format("\t%d -> %d [label=\"%s\", style=%s];\n", 
+                writer.write(String.format("\t%d -> %d [label=\"%s\", style=%s];\n",
 //                    nodes.indexOf(connection.getInputNode()),
 //                    nodes.indexOf(connection.getOutputNode()),
                 	connection.getInputNode().id,
