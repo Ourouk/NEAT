@@ -35,6 +35,32 @@ public class Pool {
     	if (id < nodes.size()) return nodes.get(id);
     	return null;
     }
+    
+    // what is the best fitness through the whole population ? 
+    public float getBestFitness() {
+    	float bestFitness = 0f;
+    	for (Species species : listOfSpecies) {
+    		bestFitness = Math.max(bestFitness, species.getBestFitnessInside());
+    	}
+    	
+    	return bestFitness;
+    }
+    
+    // the total adjusted fitness in the population : sum of average fitness of each species
+    private float getTotalAdjustedFitness() {
+    	float totalFitness = 0f;
+    	for (Species species : listOfSpecies) {
+    		species.calculateAverageFitness();
+    		totalFitness += species.getAverageFitness();
+    	}
+    	
+    	return totalFitness;
+    }
+    
+    // return the current population
+    public List<Species> getListOfSpecies() {
+		return listOfSpecies;
+	}
 
     /*
      * MATCHING
@@ -173,7 +199,7 @@ public class Pool {
     	return totalWeightDifference/matchingConnections.size();
     }
     
-	public float compatibilityDistance(Genome p1, Genome p2, float c1, float c2, float c3) {
+	public float compatibilityDistance(Genome p1, Genome p2) {
 		// Bad for performance, the three methods are almost identical		
 		int excessGenes = getExcessConnections(p1, p2).size(); // E
 		int disjointGenes = getDisjointConnections(p1, p2).size(); // D
@@ -183,7 +209,7 @@ public class Pool {
 		int largestGenomeSize = Math.max(p1.connections.size(), p2.connections.size()); // N
 		largestGenomeSize = largestGenomeSize < 20 ? 1 : largestGenomeSize;
 		
-		return (excessGenes * c1 / largestGenomeSize) + (disjointGenes * c2 / largestGenomeSize) + avgWeightDiff * c3;
+		return (excessGenes * AppConfig.NEAT_C1 / largestGenomeSize) + (disjointGenes * AppConfig.NEAT_C2 / largestGenomeSize) + avgWeightDiff * AppConfig.NEAT_C3;
 	}
 
     /*
@@ -249,43 +275,39 @@ public class Pool {
     /*
      * SPECIATION
      */
+    public void resetSpecies() {
+    	for (Species species : listOfSpecies) {
+    		if (species.getGenomes().isEmpty()) {
+    			continue;
+    		}
+    		
+    		GenomeWithFitness newRepresentative = species.getRepresentativeGenome();
+    		species.reset(); // After selecting a new representative (it clear the list)
+    		
+    		species.setRepresentativeGenome(newRepresentative);
+    		species.addGenome(species.getRepresentativeGenome());
+    	}
+    }
+    
     public void addSpecies(Species species) {
     	listOfSpecies.add(species);
     }
     
-    public void addGenomeToSpecies(Species species, GenomeWithFitness genome) {
-    	species.addGenome(genome);
-    }
-    
     // Create the specimens
     public void speciate(List<GenomeWithFitness> genomes) {
-    	float c1 = 1f;
-    	float c2 = 1f;
-    	float c3 = 0.4f;
-    	
-    	float compatibilityThreshold = 3.0f;
-    	
-    	// Reset all the species
-    	for (Species species : listOfSpecies) {
-    		species.reset();
-    		species.selectRandomGenome();
-    	}
+    	// reset all the species
+    	resetSpecies();
     	
     	// Assign genomes to species in case of delta < delta threshold, else create a new one
     	for (GenomeWithFitness genome : genomes) {
     		boolean foundSpecies = false;
     		
     		for (Species species : listOfSpecies) {
-    			float compatibilityDistance = compatibilityDistance(genome.getGenome(), species.getRepresentativeGenome().getGenome(), c1, c2, c3);
-    			if (compatibilityDistance < compatibilityThreshold) {
+    			float compatibilityDistance = compatibilityDistance(genome.getGenome(), species.getRepresentativeGenome().getGenome());
+    			if (compatibilityDistance < AppConfig.NEAT_COMPATIBILITY_THRESHOLD) {
     				species.addGenome(genome);
     				foundSpecies = true;
     				break;
-    			}
-    			
-    			// Delete empty species !!!!!!!
-    			if (species.getGenomes().isEmpty()) {
-    				listOfSpecies.remove(species);
     			}
     		}
     		
@@ -295,15 +317,18 @@ public class Pool {
     	}
     }
     
-    // Remove stagnant species if it doesn't contains the fittest genome
+    // Remove stagnant species if it doesn't contains the fittest genome (and empty species)
     public void removeStagnantSpecies(float bestFittestInPopulation, int maxStagnation) {
+    	List<Species> listOfStagnantSpecies = new ArrayList<Species>();
+    	
     	for (Species species :listOfSpecies) {
     		boolean isStagnant = species.getStagnationCounter() > maxStagnation;
-    		
-    		if (isStagnant && !species.haveFittestGenome(bestFittestInPopulation)) {
-    			listOfSpecies.remove(species);
+    		if (isStagnant && !species.haveFittestGenome(bestFittestInPopulation) || species.getGenomes().isEmpty()) {
+    			listOfStagnantSpecies.add(species);
     		}
     	}
+    	
+    	listOfSpecies.removeAll(listOfStagnantSpecies);
     }
 
 	public List<Species> getSpecies(){return listOfSpecies;}
