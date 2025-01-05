@@ -146,7 +146,7 @@ public class Species {
 
 	            // Connections
 	            for (Connection connection : genome.connections) {
-	                String label = String.format("Weight: %.2f\nInnovation: %d", connection.getWeight(), connection.innovation);
+	                String label = String.format("Weight: %.2f\nInnovation: %d", connection.getWeight(), connection.getInnovation());
 	                writer.write(String.format("\t\"%d_%d\" -> \"%d_%d\" [label=\"%s\", style=%s];\n",
 	                        genomeIndex, connection.getInputNode().id,
 	                        genomeIndex, connection.getOutputNode().id,
