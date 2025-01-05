@@ -117,12 +117,17 @@ public class SimpleGeneticAlgorithm {
 
 
     private Iindividual tournamentSelection(IPopulation pop) {
-        Population tournament = new Population(tournamentSize, false);
+        Iindividual fittest = new Individual();
+		int fitness = -1;
         for (int i = 0; i < tournamentSize; i++) {
             int randomId = (int) (Math.random() * pop.getIndividuals().size());
-            tournament.getIndividuals().add(i, pop.getIndividual(randomId));
+            if(fitness < pop.getIndividual(randomId).getFitness())
+			{
+				fittest = pop.getIndividual(randomId);
+				fitness = pop.getIndividual(randomId).getFitness();
+			}
         }
-        Iindividual fittest = tournament.getFittest();
+
         return fittest;
     }
 

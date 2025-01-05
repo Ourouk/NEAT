@@ -11,6 +11,7 @@ public interface IPopulation {
 
     Iindividual getFittest();
 
+
     Iindividual crossover(Iindividual indiv1, Iindividual indiv2) throws Exception;
 
     void mutate(Iindividual indiv) throws Exception;
