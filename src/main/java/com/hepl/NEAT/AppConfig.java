@@ -17,6 +17,9 @@ public class AppConfig {
         public static Boolean NEAT_BIAS = true;
         public static Integer NEAT_INIT_WEIGHT = 1;
         public static Boolean NEAT_INIT_WEIGHT_RANDOM = true;
+        //Random Connection Weight parameters
+        public static float NEAT_RANDOM_WEIGHT_MIN = -1.0f;
+        public static float NEAT_RANDOM_WEIGHT_MAX = 1.0f;
         //Crossover rates
         public static Double NEAT_CROSSOVER_RATE = 0.75;
         //Mutation rates

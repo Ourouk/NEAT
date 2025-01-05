@@ -89,6 +89,6 @@ public class Connection implements Comparable<Connection> {
     }
     public static float randomWeight()
     {
-        return rand.nextFloat();
+        return rand.nextFloat(AppConfig.NEAT_RANDOM_WEIGHT_MIN,AppConfig.NEAT_RANDOM_WEIGHT_MAX);
     }
 }
