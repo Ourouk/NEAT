@@ -1,5 +1,7 @@
 package com.hepl.NEAT;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -56,6 +58,10 @@ public class Species {
 		genomes.add(g);
 	}
 	
+	public void setRepresentativeGenome(GenomeWithFitness representativeGenome) {
+		this.representativeGenome = representativeGenome;
+	}
+
 	// Average fitness = (all the fitness of all the genomes) / (#genomes in the species)
 	public void calculateAverageFitness() {
 		float totalFitness = 0;
@@ -93,11 +99,11 @@ public class Species {
 		genomes.sort(Comparator.comparing(GenomeWithFitness::getFitness).reversed());
 	}
 	
-	// Remove old and weak genomes
-	public void removeOldWeakGenome() {
-		float percentageToKeep = 0.5f; // if 50% -> divide by 2, if 0%, keep the best
+	// Remove weak genomes
+	public void removeWeakGenome() {
+		// if 50% -> divide by 2, if 0%, keep the best
 		this.sortGenomesByFitness();
-		int indexToKeep = Math.max(1, (int)(genomes.size() * percentageToKeep));
+		int indexToKeep = Math.max(1, (int)(genomes.size() * AppConfig.NEAT_PERCENTAGE_TO_KEEP));
 		
 		for (int i = indexToKeep; i < genomes.size(); i++) {
 			genomes.remove(i);
@@ -112,5 +118,49 @@ public class Species {
 	public void reset() {
 		genomes.clear();
 		this.stagnationCounter = 0;
+	}
+	
+	// Same as in Genome but for species
+	public void exportToDot(String filename) {
+	    try (FileWriter writer = new FileWriter(filename)) {
+	        writer.write("digraph Species {\n");
+	        writer.write("\trankdir=LR;\n"); // Layout Left to Right
+
+	        int genomeIndex = 0; // index of each genome in the species
+
+	        for (GenomeWithFitness genomeWithFitness : genomes) {
+	            Genome genome = genomeWithFitness.getGenome();
+
+	            // subgraph for each genome
+	            writer.write(String.format("\tsubgraph cluster_%d {\n", genomeIndex));
+	            writer.write(String.format("\t\tlabel=\"Genome %d (Fitness: %.2f)\";\n", genomeIndex, genomeWithFitness.getFitness()));
+
+	            // Nodes
+	            for (Node node : genome.nodes) {
+	                String label = String.format("ID: %d", node.id);
+	                writer.write(String.format("\t\"%d_%d\" [label=\"%s\", shape=%s];\n",
+	                        genomeIndex, node.id, label,
+	                        node.type == Node.Type.INPUT ? "ellipse" :
+	                                node.type == Node.Type.OUTPUT ? "doublecircle" : "circle"));
+	            }
+
+	            // Connections
+	            for (Connection connection : genome.connections) {
+	                String label = String.format("Weight: %.2f\nInnovation: %d", connection.getWeight(), connection.innovation);
+	                writer.write(String.format("\t\"%d_%d\" -> \"%d_%d\" [label=\"%s\", style=%s];\n",
+	                        genomeIndex, connection.getInputNode().id,
+	                        genomeIndex, connection.getOutputNode().id,
+	                        label,
+	                        connection.getConnectionState() == Connection.State.ENABLED ? "solid" : "dashed"));
+	            }
+
+	            writer.write("\t}\n");
+	            genomeIndex++;
+	        }
+
+	        writer.write("}\n");
+	    } catch (IOException e) {
+	        System.err.println("Error writing DOT file: " + e.getMessage());
+	    }
 	}
 }
