@@ -276,6 +276,13 @@ public class Pool {
 	            child.addConnection(newCon);
         	}
         }
+
+        // Add nodes from parents (no duplicates)
+        for (Node node : fittest.nodes) {
+            if (findNodeById(child.nodes, node.id) == null) {
+                child.addNode(node);
+            }
+        }
         child.synchronizeNodeIds();
         return child;
     }

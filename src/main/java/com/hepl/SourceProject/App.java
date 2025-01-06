@@ -58,7 +58,7 @@ public class App {
                     AppConfig.NEAT_HIDDEN_SIZE = 0;
                     AppConfig.NEAT_OUTPUT_SIZE = 1;
                     SimpleByteFitness fitXOR2 = new SimpleByteFitness("0110");
-                    NeatPoolAdapter pop4 = new NeatPoolAdapter(2,false);
+                    NeatPoolAdapter pop4 = new NeatPoolAdapter(15,false);
                     SimpleGeneticAlgorithm sg2 = new SimpleGeneticAlgorithm(fitXOR2);
                     sg2.runAlgorithm(pop4);
                     break;

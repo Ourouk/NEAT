@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.hepl.SourceProject.App;
+
 public class Genome {
     //Store Genome Information
     public List<Node> nodes = new ArrayList<Node>();
@@ -118,79 +120,43 @@ public class Genome {
     }
 
     public float[] getOutputs(float[] in){
+
+        
+        //Reset all node values
+        //Small nodes.values() is a collection of all the values in the map not the values inside a node
         int neat_input_size = AppConfig.NEAT_INPUT_SIZE;
-        for(Node n : nodes){
-            n.setValue(Float.NaN);
-        }
+        //Clear Output to make sure
+    
+        
+        //Set input nodes
         for(int i = 0; i < neat_input_size; i++){
             getNode(i).setValue(in[i]);
             // System.out.println("Input Node " + i + " value: " + in[i]);
         }
+
+        //Set bias node if needed
         if(AppConfig.NEAT_BIAS)
         {
             getNode(AppConfig.NEAT_INPUT_SIZE).setValue(1);
-            neat_input_size++;
-            // System.out.println("Bias Node value: 1");
+            neat_input_size ++;
         }
-        float[] out = new float[AppConfig.NEAT_OUTPUT_SIZE];
-        for(int i = neat_input_size; i < neat_input_size + AppConfig.NEAT_OUTPUT_SIZE; i++){
-            Node n = getNode(i);
-            float sum = 0;
-            for(Connection c : n.incomingConnections){
-                if(c.getConnectionState() == Connection.State.ENABLED){
-                    sum += c.getInputNode().getValue() * c.getWeight();
-                }
+
+        float[] out  = new float[AppConfig.NEAT_OUTPUT_SIZE];
+        for(int i = neat_input_size; i < neat_input_size+AppConfig.NEAT_OUTPUT_SIZE; i++){
+            
+            out[i-neat_input_size] = getNode(i).getValue();
+
+            if(new Float(out[i-neat_input_size]).isNaN())
+            {
+                System.out.println("XX");
             }
-            n.setValue(sigmoid(sum));
-            out[i-neat_input_size] = n.getValue();
         }
+        
+
+
         return out;
     }
-    // //Core logic of using the network
-    // public float[] getOutputs(float[] in){
-    //     int neat_input_size = AppConfig.NEAT_INPUT_SIZE;
-    //     for(Node n : nodes){
-    //         n.setValue(Float.NaN);
-    //     }
-    //     for(int i = 0; i < neat_input_size; i++){
-    //         getNode(i).setValue(in[i]);
-    //         // System.out.println("Input Node " + i + " value: " + in[i]);
-    //     }
-    //     if(AppConfig.NEAT_BIAS)
-    //     {
-    //         getNode(AppConfig.NEAT_INPUT_SIZE).setValue(1);
-    //         neat_input_size++;
-    //         // System.out.println("Bias Node value: 1");
-    //     }
-    //     for(int i = neat_input_size+AppConfig.NEAT_OUTPUT_SIZE; i < nodes.size(); i++){
-    //         Node n = getNode(i);
-    //         float sum = 0;
-    //         for(Connection c : n.incomingConnections){
-    //             if(c.getConnectionState() == Connection.State.ENABLED){
-    //                 sum += c.getInputNode().getValue() * c.getWeight();
-    //                 System.out.println("Hidden Node " + i + " connection weight: " + c.getWeight());
-    //             }
-    //         }
-    //         n.setValue(sigmoid(sum));
-    //         // System.out.println("Hidden Node " + i + " value: " + n.getValue());
-    //     }
-    //     float out[] = new float[AppConfig.NEAT_OUTPUT_SIZE];
-    //     for(int i = neat_input_size; i < neat_input_size+AppConfig.NEAT_OUTPUT_SIZE; i++){
-    //         Node n = getNode(i);
-    //         float sum = 0;
-    //         for(Connection c : n.incomingConnections){
-    //             if(c.getConnectionState() == Connection.State.ENABLED){
-    //                 sum += c.getInputNode().getValue() * c.getWeight();
-    //                 // System.out.println("Output Node " + i + " connection weight: " + c.getWeight());
-    //             }
-    //         }
-    //         float value = sigmoid(sum);
-    //         n.setValue(value);
-    //         out[i-neat_input_size] = value;
-    //         // System.out.println("Output Node " + i + " value: " + value);
-    //     }
-    //     return out;
-    // }
+    
 
     public static float sigmoid(float x){
         // return (float) (1/(1+Math.exp(-x)));
@@ -258,10 +224,17 @@ public class Genome {
     	Genome copy = new Genome(true);
 
     	// nodes
+        int count =0;
     	for (Node node : nodes) {
     		Node newNode = node.clone();
     		copy.addNode(newNode);
+            count ++;
     	}
+        if(count != nodes.size())
+        {
+            System.out.println("");
+            
+        }
     	// connections
     	for (Connection con : connections) {
     		//Add the clone of the nodes to the new connection

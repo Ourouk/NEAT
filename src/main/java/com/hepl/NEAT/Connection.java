@@ -17,6 +17,9 @@ public class Connection implements Comparable<Connection> {
     private float weight;
     // The innovation number
     private int innovation;
+    private float value = Float.NaN;
+    private boolean valueFlag = false;
+    
     //Create a seed for random number generatuin
     private static Random rand = new Random();
 
@@ -44,6 +47,26 @@ public class Connection implements Comparable<Connection> {
     public void setConnectionState(State connectionState) {
         this.connectionState = connectionState;
     }
+    public void setValue(float value) {
+        //System.out.print("|Setted value Con:"+value+"|");
+        this.value = value * weight;
+        valueFlag = true;
+        outputNode.ConnectionFinished();
+    }
+    public float getValue() {
+        return value;
+    }
+    public void eraseValue()
+    {
+        //System.out.print("|Lose value Connection|");
+        valueFlag = false;
+        this.value = Float.NaN;
+    }
+    public boolean IsEmpty()
+    {
+        return valueFlag;
+    }
+
     public void flipConnectionState() {
         if(this.connectionState == State.ENABLED){
             this.connectionState = State.DISABLED;

@@ -39,8 +39,12 @@ public class SimpleGeneticAlgorithm {
 
         generationCount = 1;
         while (myPop.getFittest().getFitness() < FitnessManager.getMaxFitness()) { //problème de taille
-            System.out.println("Generation: " + generationCount + " Best fitness found: " + myPop.getFittest().getFitness() + "Ind Count :  "+ myPop.getIndividuals().size());
+            System.out.println("Generation: " + generationCount + " Best fitness found: " + myPop.getFittest().getFitness() + " Ind Count :  "+ myPop.getIndividuals().size());
             myPop = evolvePopulation(myPop);
+			// for (Iindividual ind : myPop.getIndividuals()) 
+			// {
+			// 	System.out.print(ind.getFitness()+" ");
+			// }
             generationCount++;
             if(generationCount>=overshootIteration){
 				System.out.println("Overshoot!");

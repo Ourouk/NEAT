@@ -28,23 +28,59 @@ public class Node {
         this.outgoingConnections = out;
     }
     //This Wrapper is needed to get the value of the node
-    public float getValue(){
-        if(Float.isNaN(this.value)){
-//            System.out.println("Warning using fallback value calcultation method because of NaN value");
-            float sum = 0;
-            for(Connection c : incomingConnections){
-                if(c.getConnectionState() == Connection.State.ENABLED){
-                    sum  += c.getWeight() * c.getInputNode().getValue();
-                }
-            }
-            //DONE: Add activation function
-            return Genome.sigmoid(sum);
-        }else{
-            return value;
+
+    public float getValue()
+    {
+      //System.out.println("|Out :"+value+"|");
+        return value;
+    }
+    public void setValue(float value)
+    {
+        //System.out.print("|In :"+value+"|");
+        this.value = value;
+        // Send forward
+        for (Connection connection : outgoingConnections) 
+        {
+            if(connection.getConnectionState() == Connection.State.ENABLED){
+            connection.setValue(value); 
+            } 
         }
     }
-    public void setValue(float value){
-        this.value = value;
+    public void ConnectionFinished(){
+
+        //Allowed to Calc ?
+        for (Connection connection : incomingConnections)
+        {
+            if(connection.getConnectionState() == Connection.State.ENABLED && !connection.IsEmpty())
+            {
+                return;
+            }   
+        }
+        // Calc
+        value = 0;
+        for (Connection connection : incomingConnections)
+        {
+            if(connection.getConnectionState() == Connection.State.ENABLED)
+            {
+                value += connection.getValue();
+            }   
+        }
+        value = Genome.sigmoid(value);
+        //System.out.print("|Node set : "+value+"|");
+        // Send forward
+        for (Connection connection : outgoingConnections) 
+        {
+            if(connection.getConnectionState() == Connection.State.ENABLED){
+            connection.setValue(value); 
+            } 
+        }
+        //Clean Up
+        for (Connection connection : incomingConnections)
+        {
+            if(connection.getConnectionState() == Connection.State.ENABLED){
+                connection.eraseValue();
+                } 
+        }
     }
     // Add a connection to the node
     public void addIncomingConnection(Connection connection) {
