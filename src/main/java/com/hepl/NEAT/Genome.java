@@ -265,7 +265,7 @@ public class Genome {
     	// connections
     	for (Connection con : connections) {
     		//Add the clone of the nodes to the new connection
-            Connection newCon = new Connection(copy.getNode(con.getInputNode().id), copy.getNode(con.getOutputNode().id), con.getWeight());
+            Connection newCon = new Connection(copy.getNode(con.getInputNode().id), copy.getNode(con.getOutputNode().id), con.getWeight(),con.getInnovation());
             copy.addConnection(newCon);
     	}
         //Update the node references for the connection

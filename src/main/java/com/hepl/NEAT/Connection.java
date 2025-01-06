@@ -27,6 +27,14 @@ public class Connection implements Comparable<Connection> {
         this.weight = weight;
         this.innovation = InnovationCounter.newInnovation(Input.id,Output.id);
     }
+    public Connection(Node Input, Node Output,float weight,int innovation) {
+        this.inputNode = Input;
+        this.outputNode = Output;
+        this.connectionState = State.ENABLED;
+        this.weight = weight;
+        this.innovation = innovation;
+    }
+
     public int getInnovation()
     {
         return innovation;
