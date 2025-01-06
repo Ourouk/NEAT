@@ -3,7 +3,7 @@ package com.hepl.NEAT;
 import java.util.Random;
 
 public class Connection implements Comparable<Connection> {
-    public enum State {
+    static public enum State {
         ENABLED,DISABLED
     }
     // Store information about connected nodes
@@ -84,6 +84,10 @@ public class Connection implements Comparable<Connection> {
         if(outputNode.type == Node.Type.OUTPUT)
         {
             return true;
+        }
+        if(inputNode == outputNode)
+        {
+            return false;
         }
         return inputNode.id < outputNode.id;
     }

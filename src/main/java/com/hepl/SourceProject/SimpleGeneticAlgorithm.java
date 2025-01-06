@@ -24,6 +24,7 @@ public class SimpleGeneticAlgorithm {
     private SelectionType selection = SelectionType.TOURNAMENT;
 
 	public static IFitness FitnessManager;
+	static int generationCount = 1;
 
 	public SimpleGeneticAlgorithm(IFitness f)
 	{
@@ -36,7 +37,7 @@ public class SimpleGeneticAlgorithm {
         //} //Boom 
         //IPopulation myPop = new Population(populationSize, true);
 
-        int generationCount = 1;
+        generationCount = 1;
         while (myPop.getFittest().getFitness() < FitnessManager.getMaxFitness()) { //problème de taille
             System.out.println("Generation: " + generationCount + " Best fitness found: " + myPop.getFittest().getFitness() + "Ind Count :  "+ myPop.getIndividuals().size());
             myPop = evolvePopulation(myPop);

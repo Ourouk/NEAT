@@ -30,10 +30,12 @@ public class Node {
     //This Wrapper is needed to get the value of the node
     public float getValue(){
         if(Float.isNaN(this.value)){
-            System.out.println("Warning using fallback value calcultation method because of NaN value");
+//            System.out.println("Warning using fallback value calcultation method because of NaN value");
             float sum = 0;
             for(Connection c : incomingConnections){
-                sum  += c.getWeight() * c.getInputNode().getValue();
+                if(c.getConnectionState() == Connection.State.ENABLED){
+                    sum  += c.getWeight() * c.getInputNode().getValue();
+                }
             }
             //DONE: Add activation function
             return Genome.sigmoid(sum);
@@ -53,7 +55,7 @@ public class Node {
 
     public void addOutgoingConnection(Connection connection) {
         if(connection.IsValid()){
-        outgoingConnections.add(connection);
+            outgoingConnections.add(connection);
         }
     }
     @Override

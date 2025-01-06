@@ -107,6 +107,9 @@ public class TestMatchingDisjointExcess {
         List<Connection> disjointConnections = pool.getDisjointConnections(parent1, parent2);
         List<Connection> excessConnections = pool.getExcessConnections(parent1, parent2);
         
+        System.out.print("Compatibility distance between parent 1 et parent 2: " + pool.compatibilityDistance(parent1, parent2));
+        System.out.println();
+        
         for (Connection con : matchingConnections) {
         	System.out.println("match "+con.getInnovation());
         }
