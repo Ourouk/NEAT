@@ -272,12 +272,12 @@ public class Genome {
         for(Node node : copy.nodes) {
             node.incomingConnections = new ArrayList<Connection>();
             node.outgoingConnections = new ArrayList<Connection>();
-            for(Connection con : connections) {
-                if(con.getInputNode() == node) {
-                    node.outgoingConnections.add(con);
+            for(Connection c : copy.connections) {
+                if(c.getInputNode() == node) {
+                    node.addOutgoingConnection(c);
                 }
-                if(con.getOutputNode() == node) {
-                    node.incomingConnections.add(con);
+                if(c.getOutputNode() == node) {
+                    node.addIncomingConnection(c);
                 }
             }
         }
