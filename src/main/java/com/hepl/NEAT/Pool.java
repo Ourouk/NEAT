@@ -227,13 +227,14 @@ public class Pool {
     /*
      * CROSSOVER
      */
-    public Genome GenomeCrossover(Genome p1, Genome p2, float fitnessP1, float fitnessP2) {
+    public Genome GenomeCrossover(Genome p1_in, Genome p2_in, float fitnessP1, float fitnessP2) {
         Genome child = new Genome(true);
         
         // synchronize of the ids of the parent nodes
 //        p1.synchronizeNodeIds();
 //        p2.sy nchronizeNodeIds();
-
+		Genome p1 = p1_in.clone();
+		Genome p2 = p2_in.clone();
         // Determine the fitter parent
         Genome fittest = fitnessP1 >= fitnessP2 ? p1 : p2;
         Genome other = fitnessP1 >= fitnessP2 ? p2 : p1;
@@ -243,14 +244,27 @@ public class Pool {
         List<Connection> disjointConnections = getDisjointConnections(fittest, other);
         List<Connection> excessConnections = getExcessConnections(fittest, other);
 
+
+		// Add nodes from parents (no duplicates)
+		for (Node node : fittest.nodes) {
+			if (findNodeById(child.nodes, node.id) == null) {
+				child.addNode(node);
+			}
+		}
+		for (Node node : other.nodes) {
+			if (findNodeById(child.nodes, node.id) == null) {
+				child.addNode(node);
+			}
+		}
+
         // Add matching connections with averaged weights
         for (Connection con1 : matchingConnections) {
             Connection con2 = findConnectionByInnovation(other.connections, con1.getInnovation());
-            
+
             // copy of the connection + change weight
-            Connection newCon = con1.clone();
+            Connection newCon = con1;
             newCon.setWeight((con1.getWeight() + con2.getWeight()) / 2);
-            
+
             // randomly change the state
             newCon.setConnectionState(Math.random() > 0.5 ? con1.getConnectionState() : con2.getConnectionState());
             child.addConnection(newCon);
@@ -258,28 +272,15 @@ public class Pool {
 
         // Add disjoint and excess connections from the fittest parent
         for (Connection con : disjointConnections) {
-            Connection newCon = con.clone();
+            Connection newCon = con;
             child.addConnection(newCon);
         }
         for (Connection con : excessConnections) {
         	if (fittest.connections.contains(con)) {
-	            Connection newCon = con.clone();
+	            Connection newCon = con;
 	            child.addConnection(newCon);
         	}
         }
-
-        // Add nodes from parents (no duplicates)
-        for (Node node : fittest.nodes) {
-            if (findNodeById(child.nodes, node.id) == null) {
-                child.addNode(node);
-            }
-        }
-        for (Node node : other.nodes) {
-            if (findNodeById(child.nodes, node.id) == null) {
-                child.addNode(node);
-            }
-        }
-
         child.synchronizeNodeIds();
         return child;
     }

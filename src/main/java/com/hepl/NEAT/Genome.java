@@ -116,57 +116,84 @@ public class Genome {
             }
         }
     }
-    //Core logic of using the network
+
     public float[] getOutputs(float[] in){
-        //Reset all node values
-        //Small nodes.values() is a collection of all the values in the map not the values inside a node
         int neat_input_size = AppConfig.NEAT_INPUT_SIZE;
         for(Node n : nodes){
-            //permit to check if the node is well cleaned easier
             n.setValue(Float.NaN);
         }
-        //Set input nodes
         for(int i = 0; i < neat_input_size; i++){
             getNode(i).setValue(in[i]);
+            // System.out.println("Input Node " + i + " value: " + in[i]);
         }
-
-        //Set bias node if needed
         if(AppConfig.NEAT_BIAS)
         {
             getNode(AppConfig.NEAT_INPUT_SIZE).setValue(1);
             neat_input_size++;
+            // System.out.println("Bias Node value: 1");
         }
-        //Evaluate hidden nodes
-        //This code assume that the nodes are sorted by layer
-        for(int i = neat_input_size+AppConfig.NEAT_OUTPUT_SIZE; i < nodes.size(); i++){
+        float[] out = new float[AppConfig.NEAT_OUTPUT_SIZE];
+        for(int i = neat_input_size; i < neat_input_size + AppConfig.NEAT_OUTPUT_SIZE; i++){
             Node n = getNode(i);
             float sum = 0;
             for(Connection c : n.incomingConnections){
                 if(c.getConnectionState() == Connection.State.ENABLED){
-                    sum += c.getInputNode().getValue()*c.getWeight(); //Assume that input node are already evaluated
-                }
-                n.setValue(sigmoid(sum));
-            }
-        }
-        float out[] = new float[AppConfig.NEAT_OUTPUT_SIZE];
-        //Evaluate output nodes
-        for(int i = neat_input_size; i < neat_input_size+AppConfig.NEAT_OUTPUT_SIZE; i++){
-            Node n = getNode(i);
-            float sum = 0;
-            for(Connection c : n.incomingConnections){
-                if(c.getConnectionState() == Connection.State.ENABLED){
-                    sum += c.getInputNode().getValue()*c.getWeight(); //Assume that input node are already evaluated
+                    sum += c.getInputNode().getValue() * c.getWeight();
                 }
             }
-            float value = sigmoid(sum);
-            n.setValue(value);
-            out[i-neat_input_size] = value;
+            n.setValue(sigmoid(sum));
+            out[i-neat_input_size] = n.getValue();
         }
         return out;
     }
+    // //Core logic of using the network
+    // public float[] getOutputs(float[] in){
+    //     int neat_input_size = AppConfig.NEAT_INPUT_SIZE;
+    //     for(Node n : nodes){
+    //         n.setValue(Float.NaN);
+    //     }
+    //     for(int i = 0; i < neat_input_size; i++){
+    //         getNode(i).setValue(in[i]);
+    //         // System.out.println("Input Node " + i + " value: " + in[i]);
+    //     }
+    //     if(AppConfig.NEAT_BIAS)
+    //     {
+    //         getNode(AppConfig.NEAT_INPUT_SIZE).setValue(1);
+    //         neat_input_size++;
+    //         // System.out.println("Bias Node value: 1");
+    //     }
+    //     for(int i = neat_input_size+AppConfig.NEAT_OUTPUT_SIZE; i < nodes.size(); i++){
+    //         Node n = getNode(i);
+    //         float sum = 0;
+    //         for(Connection c : n.incomingConnections){
+    //             if(c.getConnectionState() == Connection.State.ENABLED){
+    //                 sum += c.getInputNode().getValue() * c.getWeight();
+    //                 System.out.println("Hidden Node " + i + " connection weight: " + c.getWeight());
+    //             }
+    //         }
+    //         n.setValue(sigmoid(sum));
+    //         // System.out.println("Hidden Node " + i + " value: " + n.getValue());
+    //     }
+    //     float out[] = new float[AppConfig.NEAT_OUTPUT_SIZE];
+    //     for(int i = neat_input_size; i < neat_input_size+AppConfig.NEAT_OUTPUT_SIZE; i++){
+    //         Node n = getNode(i);
+    //         float sum = 0;
+    //         for(Connection c : n.incomingConnections){
+    //             if(c.getConnectionState() == Connection.State.ENABLED){
+    //                 sum += c.getInputNode().getValue() * c.getWeight();
+    //                 // System.out.println("Output Node " + i + " connection weight: " + c.getWeight());
+    //             }
+    //         }
+    //         float value = sigmoid(sum);
+    //         n.setValue(value);
+    //         out[i-neat_input_size] = value;
+    //         // System.out.println("Output Node " + i + " value: " + value);
+    //     }
+    //     return out;
+    // }
 
     public static float sigmoid(float x){
-        //return (float) (1/(1+Math.exp(-x)));
+        // return (float) (1/(1+Math.exp(-x)));
         //Change the sigmoid function from the documentation
         return (float) (1/(1+Math.exp(-4.9*x)));
     }
@@ -237,9 +264,23 @@ public class Genome {
     	}
     	// connections
     	for (Connection con : connections) {
-    		Connection newCon = con.clone();
-    		copy.addConnection(newCon);
+    		//Add the clone of the nodes to the new connection
+            Connection newCon = new Connection(copy.getNode(con.getInputNode().id), copy.getNode(con.getOutputNode().id), con.getWeight());
+            copy.addConnection(newCon);
     	}
+        //Update the node references for the connection
+        for(Node node : copy.nodes) {
+            node.incomingConnections = new ArrayList<Connection>();
+            node.outgoingConnections = new ArrayList<Connection>();
+            for(Connection con : connections) {
+                if(con.getInputNode() == node) {
+                    node.outgoingConnections.add(con);
+                }
+                if(con.getOutputNode() == node) {
+                    node.incomingConnections.add(con);
+                }
+            }
+        }
     	return copy;
     }
     // Print the genome in a dot file (https://en.wikipedia.org/wiki/DOT_%28graph_description_language%29)

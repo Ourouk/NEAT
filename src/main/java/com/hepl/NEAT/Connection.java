@@ -85,6 +85,10 @@ public class Connection implements Comparable<Connection> {
         {
             return true;
         }
+        if(inputNode == outputNode)
+        {
+            return false;
+        }
         return inputNode.id < outputNode.id;
     }
     public static float randomWeight()
