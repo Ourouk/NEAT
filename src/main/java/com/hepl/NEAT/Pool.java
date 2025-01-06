@@ -251,11 +251,6 @@ public class Pool {
 				child.addNode(node);
 			}
 		}
-		for (Node node : other.nodes) {
-			if (findNodeById(child.nodes, node.id) == null) {
-				child.addNode(node);
-			}
-		}
 
         // Add matching connections with averaged weights
         for (Connection con1 : matchingConnections) {
